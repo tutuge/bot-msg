@@ -8,7 +8,6 @@ import com.ruoyi.framework.aspectj.lang.enums.BusinessType;
 import com.ruoyi.framework.web.controller.BaseController;
 import com.ruoyi.project.system.domain.bo.CurrencyNetworkBo;
 import com.ruoyi.project.system.domain.vo.CurrencyNetworkVo;
-import com.ruoyi.project.system.service.ICurrencyNetworkService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;

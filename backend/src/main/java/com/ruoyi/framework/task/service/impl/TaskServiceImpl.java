@@ -1,13 +1,11 @@
 package com.ruoyi.framework.task.service.impl;
 
 import com.alibaba.fastjson2.JSONObject;
-import com.ruoyi.common.utils.RedisUtils;
 import com.ruoyi.framework.task.service.TaskService;
 import com.ruoyi.framework.task.service.UpdateProdService;
 import com.ruoyi.project.system.domain.PlatformProductInfo;
 import com.ruoyi.project.system.domain.enumd.BasicEnum;
 import com.ruoyi.project.system.domain.vo.CurrencyVo;
-import com.ruoyi.project.system.service.ICurrencyService;
 import com.ruoyi.project.system.service.PlatformProductInfoService;
 import com.ruoyi.project.system.util.HttpClientUtils;
 import lombok.extern.slf4j.Slf4j;

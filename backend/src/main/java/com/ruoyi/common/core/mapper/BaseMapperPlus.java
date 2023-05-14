@@ -82,7 +82,7 @@ public interface BaseMapperPlus<M, T, V> extends BaseMapper<T> {
     default boolean insertBatch(Collection<T> entityList, int batchSize) {
         String sqlStatement = SqlHelper.getSqlStatement(this.currentMapperClass(), SqlMethod.INSERT_ONE);
         return SqlHelper.executeBatch(this.currentModelClass(), log, entityList, batchSize,
-            (sqlSession, entity) -> sqlSession.insert(sqlStatement, entity));
+                (sqlSession, entity) -> sqlSession.insert(sqlStatement, entity));
     }
 
     /**
@@ -91,11 +91,11 @@ public interface BaseMapperPlus<M, T, V> extends BaseMapper<T> {
     default boolean updateBatchById(Collection<T> entityList, int batchSize) {
         String sqlStatement = SqlHelper.getSqlStatement(this.currentMapperClass(), SqlMethod.UPDATE_BY_ID);
         return SqlHelper.executeBatch(this.currentModelClass(), log, entityList, batchSize,
-            (sqlSession, entity) -> {
-                MapperMethod.ParamMap<T> param = new MapperMethod.ParamMap<>();
-                param.put(Constants.ENTITY, entity);
-                sqlSession.update(sqlStatement, param);
-            });
+                (sqlSession, entity) -> {
+                    MapperMethod.ParamMap<T> param = new MapperMethod.ParamMap<>();
+                    param.put(Constants.ENTITY, entity);
+                    sqlSession.update(sqlStatement, param);
+                });
     }
 
     /**
@@ -110,7 +110,7 @@ public interface BaseMapperPlus<M, T, V> extends BaseMapper<T> {
             Object idVal = tableInfo.getPropertyValue(entity, keyProperty);
             String sqlStatement = SqlHelper.getSqlStatement(this.currentMapperClass(), SqlMethod.SELECT_BY_ID);
             return StringUtils.checkValNull(idVal)
-                || CollectionUtils.isEmpty(sqlSession.selectList(sqlStatement, entity));
+                    || CollectionUtils.isEmpty(sqlSession.selectList(sqlStatement, entity));
         }, (sqlSession, entity) -> {
             MapperMethod.ParamMap<T> param = new MapperMethod.ParamMap<>();
             param.put(Constants.ENTITY, entity);

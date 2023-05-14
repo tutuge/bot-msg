@@ -13,11 +13,11 @@ import org.springframework.scheduling.annotation.EnableAsync;
  */
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @EnableAsync
-public class AggregationApplication extends SpringApplication {
+public class BotApplication extends SpringApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(AggregationApplication.class, args);
-        System.out.println("(♥◠‿◠)ﾉﾞ  聚合项目启动成功   ლ(´ڡ`ლ)");
+        SpringApplication.run(BotApplication.class, args);
+        System.out.println("(♥◠‿◠)ﾉﾞ  bot项目启动成功   ლ(´ڡ`ლ)");
     }
 
 }
