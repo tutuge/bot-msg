@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.mapper.PlatformProductinfoInformationMapper">
+
+    <resultMap type="PlatformProductInfoInformation" id="PlatformProductinfoInformationResult">
+        <result property="id" column="id"/>
+        <result property="pid" column="pid"/>
+        <result property="briefIntroduction" column="brief_introduction"/>
+        <result property="distributionPlatform" column="distribution_platform"/>
+        <result property="informations" column="informations"/>
+        <result property="printingProcess" column="printing_process"/>
+        <result property="printer" column="printer"/>
+        <result property="createTime" column="create_time"/>
+        <result property="remark" column="remark"/>
+        <result property="identification" column="identification"/>
+        <result property="languageId" column="language_id"/>
+    </resultMap>
+
+    <sql id="selectPlatformProductinfoInformationVo">
+        select id,
+               pid,
+               brief_introduction,
+               distribution_platform,
+               informations,
+               printing_process,
+               printer,
+               create_time,
+               remark,
+               identification,
+               language_id
+        from platform_product_info_information
+    </sql>
+
+    <select id="selectPlatformProductinfoInformationList" parameterType="PlatformProductInfoInformation"
+            resultMap="PlatformProductinfoInformationResult">
+        <include refid="selectPlatformProductinfoInformationVo"/>
+        <where>
+            <if test="pid != null ">and pid = #{pid}</if>
+            <if test="briefIntroduction != null  and briefIntroduction != ''">and brief_introduction =
+                #{briefIntroduction}
+            </if>
+            <if test="distributionPlatform != null  and distributionPlatform != ''">and distribution_platform =
+                #{distributionPlatform}
+            </if>
+            <if test="informations != null  and informations != ''">and informations = #{informations}</if>
+            <if test="printingProcess != null  and printingProcess != ''">and printing_process = #{printingProcess}</if>
+            <if test="printer != null  and printer != ''">and printer = #{printer}</if>
+            <if test="identification != null  and identification != ''">and identification = #{identification}</if>
+        </where>
+    </select>
+
+    <select id="selectPlatformProductinfoInformationById" parameterType="Long"
+            resultMap="PlatformProductinfoInformationResult">
+        <include refid="selectPlatformProductinfoInformationVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertPlatformProductinfoInformation" parameterType="PlatformProductInfoInformation"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into platform_product_info_information
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pid != null ">pid,</if>
+            <if test="briefIntroduction != null  and briefIntroduction != ''">brief_introduction,</if>
+            <if test="distributionPlatform != null  and distributionPlatform != ''">distribution_platform,</if>
+            <if test="informations != null  and informations != ''">informations,</if>
+            <if test="printingProcess != null  and printingProcess != ''">printing_process,</if>
+            <if test="printer != null  and printer != ''">printer,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="remark != null  and remark != ''">remark,</if>
+            <if test="identification != null  and identification != ''">identification,</if>
+            <if test="languageId != null ">language_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="pid != null ">#{pid},</if>
+            <if test="briefIntroduction != null  and briefIntroduction != ''">#{briefIntroduction},</if>
+            <if test="distributionPlatform != null  and distributionPlatform != ''">#{distributionPlatform},</if>
+            <if test="informations != null  and informations != ''">#{informations},</if>
+            <if test="printingProcess != null  and printingProcess != ''">#{printingProcess},</if>
+            <if test="printer != null  and printer != ''">#{printer},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="remark != null  and remark != ''">#{remark},</if>
+            <if test="identification != null  and identification != ''">#{identification},</if>
+            <if test="languageId != null ">#{languageId},</if>
+        </trim>
+    </insert>
+
+    <update id="updatePlatformProductinfoInformation" parameterType="PlatformProductInfoInformation">
+        update platform_product_info_information
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="pid != null ">pid = #{pid},</if>
+            <if test="briefIntroduction != null  and briefIntroduction != ''">brief_introduction =
+                #{briefIntroduction},
+            </if>
+            <if test="distributionPlatform != null  and distributionPlatform != ''">distribution_platform =
+                #{distributionPlatform},
+            </if>
+            <if test="informations != null  and informations != ''">informations = #{informations},</if>
+            <if test="printingProcess != null  and printingProcess != ''">printing_process = #{printingProcess},</if>
+            <if test="printer != null  and printer != ''">printer = #{printer},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="remark != null  and remark != ''">remark = #{remark},</if>
+            <if test="identification != null  and identification != ''">identification = #{identification},</if>
+            <if test="languageId != null ">language_id = #{languageId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePlatformProductinfoInformationById" parameterType="Long">
+        delete
+        from platform_product_info_information
+        where id = #{id}
+    </delete>
+
+    <delete id="deletePlatformProductinfoInformationByIds" parameterType="String">
+        delete from platform_product_info_information where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

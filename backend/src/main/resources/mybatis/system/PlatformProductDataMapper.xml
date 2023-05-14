@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.mapper.PlatformProductDataMapper">
+
+    <resultMap type="PlatformProductData" id="PlatformProductdataResult">
+        <result property="id" column="id"/>
+        <result property="pid" column="pid"/>
+        <result property="name" column="name"/>
+        <result property="price" column="price"/>
+        <result property="open" column="open"/>
+        <result property="close" column="close"/>
+        <result property="high" column="high"/>
+        <result property="low" column="low"/>
+        <result property="diff" column="diff"/>
+        <result property="diffrate" column="diffrate"/>
+        <result property="createTime" column="create_time"/>
+        <result property="remark" column="remark"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="rands" column="rands"/>
+        <result property="point" column="point"/>
+        <result property="isdelete" column="isdelete"/>
+        <result property="pre" column="pre"/>
+        <result property="bidPrice" column="bid_price"/>
+        <result property="askPrice" column="ask_price"/>
+    </resultMap>
+
+
+    <sql id="selectPlatformProductdataVo">
+        select id,
+               pid,
+               name,
+               price, open, close, high, low, diff, diffrate, create_time, remark, update_time, rands, point, isdelete, pre,
+               bid_price,ask_price
+        from platform_product_data
+    </sql>
+
+    <select id="selectPlatformProductdataList" parameterType="PlatformProductData"
+            resultMap="PlatformProductdataResult">
+        <include refid="selectPlatformProductdataVo"/>
+        <where>
+            <if test="pid != null ">and pid = #{pid}</if>
+            <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
+            <if test="price != null  and price != ''">and price = #{price}</if>
+            <if test="open != null  and open != ''">and open = #{open}</if>
+            <if test="close != null  and close != ''">and close = #{close}</if>
+            <if test="high != null  and high != ''">and high = #{high}</if>
+            <if test="low != null  and low != ''">and low = #{low}</if>
+            <if test="diff != null  and diff != ''">and diff = #{diff}</if>
+            <if test="diffrate != null  and diffrate != ''">and diffrate = #{diffrate}</if>
+            <if test="rands != null  and rands != ''">and rands = #{rands}</if>
+            <if test="point != null  and point != ''">and point = #{point}</if>
+            <if test="isdelete != null ">and isdelete = #{isdelete}</if>
+        </where>
+    </select>
+
+    <select id="selectPlatformProductDataById" parameterType="Long" resultMap="PlatformProductdataResult">
+        <include refid="selectPlatformProductdataVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectPlatformProductdataByPairId" parameterType="Long" resultMap="PlatformProductdataResult">
+        <include refid="selectPlatformProductdataVo"/>
+        where pair_id = #{pairId}
+    </select>
+
+    <select id="selectDataByProductId" parameterType="Long" resultMap="PlatformProductdataResult">
+        <include refid="selectPlatformProductdataVo"/>
+        where pid = #{pid}
+    </select>
+
+    <insert id="insertPlatformProductdata" parameterType="PlatformProductData" useGeneratedKeys="true" keyProperty="id">
+        insert into platform_product_data
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pid != null ">pid,</if>
+            <if test="name != null  and name != ''">name,</if>
+            <if test="price != null  and price != ''">price,</if>
+            <if test="open != null  and open != ''">open,</if>
+            <if test="close != null  and close != ''">close,</if>
+            <if test="high != null  and high != ''">high,</if>
+            <if test="low != null  and low != ''">low,</if>
+            <if test="diff != null  and diff != ''">diff,</if>
+            <if test="diffrate != null  and diffrate != ''">diffrate,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="remark != null  and remark != ''">remark,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="rands != null  and rands != ''">rands,</if>
+            <if test="point != null  and point != ''">point,</if>
+            <if test="isdelete != null ">isdelete,</if>
+            <if test="pre != null and pre != '' ">pre,</if>
+            <if test="bidPrice != null and bidPrice != '' ">bid_price,</if>
+            <if test="askPrice != null and askPrice != '' ">ask_price,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="pid != null ">#{pid},</if>
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="price != null  and price != ''">#{price},</if>
+            <if test="open != null  and open != ''">#{open},</if>
+            <if test="close != null  and close != ''">#{close},</if>
+            <if test="high != null  and high != ''">#{high},</if>
+            <if test="low != null  and low != ''">#{low},</if>
+            <if test="diff != null  and diff != ''">#{diff},</if>
+            <if test="diffrate != null  and diffrate != ''">#{diffrate},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="remark != null  and remark != ''">#{remark},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="rands != null  and rands != ''">#{rands},</if>
+            <if test="point != null  and point != ''">#{point},</if>
+            <if test="isdelete != null ">#{isdelete},</if>
+            <if test="pre != null and pre != '' ">#{pre},</if>
+            <if test="bidPrice != null and bidPrice != '' ">#{bidPrice},</if>
+            <if test="askPrice != null and askPrice != '' ">#{askPrice},</if>
+        </trim>
+    </insert>
+
+    <update id="updatePlatformProductdata" parameterType="PlatformProductData">
+        update platform_product_data
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="pid != null ">pid = #{pid},</if>
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="price != null  and price != ''">price = #{price},</if>
+            <if test="open != null  and open != ''">open = #{open},</if>
+            <if test="close != null  and close != ''">close = #{close},</if>
+            <if test="high != null  and high != ''">high = #{high},</if>
+            <if test="low != null  and low != ''">low = #{low},</if>
+            <if test="diff != null  and diff != ''">diff = #{diff},</if>
+            <if test="diffrate != null  and diffrate != ''">diffrate = #{diffrate},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="remark != null  and remark != ''">remark = #{remark},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="rands != null  and rands != ''">rands = #{rands},</if>
+            <if test="point != null  and point != ''">point = #{point},</if>
+            <if test="isdelete != null ">isdelete = #{isdelete},</if>
+            <if test="pre != null  and pre != ''">pre = #{pre},</if>
+            <if test="bidPrice != null  and bidPrice != ''">bid_price = #{bidPrice},</if>
+            <if test="askPrice != null  and askPrice != ''">ask_price = #{askPrice},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePlatformProductdataById" parameterType="Long">
+        delete
+        from platform_product_data
+        where id = #{id}
+    </delete>
+
+    <delete id="deletePlatformProductdataByIds" parameterType="String">
+        delete from platform_product_data where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

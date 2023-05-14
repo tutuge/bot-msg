@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.mapper.PlatformOpenTimeMapper">
+    
+    <resultMap type="OpenTime" id="PlatformOpentimeResult">
+        <result property="id"    column="id"    />
+        <result property="pid"    column="pid"    />
+        <result property="type"    column="type"    />
+        <result property="open_time"    column="openTime"    />
+    </resultMap>
+
+    <sql id="selectPlatformOpentimeVo">
+        select id, pid, type, open_time from platform_open_time
+    </sql>
+
+    <select id="selectPlatformOpenTimeList" parameterType="OpenTime" resultMap="PlatformOpentimeResult">
+        <include refid="selectPlatformOpentimeVo"/>
+        <where>  
+            <if test="pid != null "> and pid = #{pid}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="openTime != null  and openTime != ''"> and open_time = #{openTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectPlatformOpenTimeById" parameterType="Long" resultMap="PlatformOpentimeResult">
+        <include refid="selectPlatformOpentimeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPlatformOpenTime" parameterType="OpenTime" useGeneratedKeys="true" keyProperty="id">
+        insert into platform_open_time
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pid != null ">pid,</if>
+            <if test="type != null  and type != ''">type,</if>
+            <if test="openTime != null  and openTime != ''">open_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="pid != null ">#{pid},</if>
+            <if test="type != null  and type != ''">#{type},</if>
+            <if test="openTime != null  and openTime != ''">#{openTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePlatformOpenTime" parameterType="OpenTime">
+        update platform_open_time
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="pid != null ">pid = #{pid},</if>
+            <if test="type != null  and type != ''">type = #{type},</if>
+            open_time = #{openTime},
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePlatformOpenTimeById" parameterType="Long">
+        delete from platform_open_time where id = #{id}
+    </delete>
+
+    <delete id="deletePlatformOpenTimeByIds" parameterType="String">
+        delete from platform_open_time where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

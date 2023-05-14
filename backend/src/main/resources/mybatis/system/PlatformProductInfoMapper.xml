@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.mapper.PlatformProductInfoMapper">
+
+    <resultMap type="PlatformProductInfo" id="PlatformProductinfoResult">
+        <result property="pid"    column="pid"    />
+        <result property="ptitle"    column="ptitle"    />
+        <result property="commission"    column="commission"    />
+        <result property="otid"    column="otid"    />
+        <result property="isopen"    column="isopen"    />
+        <result property="type"    column="type"    />
+        <result property="pointLow"    column="point_low"    />
+        <result property="pointTop"    column="point_top"    />
+        <result property="rands"    column="rands"    />
+        <result property="moneyList"    column="money_list"    />
+        <result property="isdelete"    column="isdelete"    />
+        <result property="procode"    column="procode"    />
+        <result property="gearing"    column="gearing"    />
+        <result property="handMoney"    column="hand_money"    />
+        <result property="addData"    column="add_data"    />
+        <result property="protime"    column="protime"    />
+        <result property="propoint"    column="propoint"    />
+        <result property="proscale"    column="proscale"    />
+        <result property="topOrNot"    column="top_or_not"    />
+        <result property="isIndex"    column="is_index"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="minOrder"    column="min_order"    />
+        <result property="maxOrder"    column="max_order"    />
+        <result property="remark"    column="remark"    />
+        <result property="picUrl"    column="pic_url"    />
+        <result property="pointMoney"    column="point_money"    />
+        <result property="decimalPlaces"    column="decimal_places"    />
+        <result property="fullName"    column="full_name"    />
+        <result property="seq"    column="seq"    />
+        <result property="pcIndex"    column="pc_index"    />
+    </resultMap>
+
+    <resultMap type="PlatformProductinfoVo" id="PlatformProductinfoResult_">
+        <result property="pid"    column="pid"    />
+        <result property="picUrl"    column="pic_url"    />
+        <result property="ptitle"    column="ptitle"    />
+        <result property="price"    column="price"    />
+        <result property="rands"    column="rands"    />
+        <result property="procode"    column="procode"    />
+        <result property="decimalPlaces"    column="decimal_places"    />
+        <result property="pointMoney"    column="point_money"    />
+        <result property="fullName"    column="full_name"    />
+    </resultMap>
+
+    <resultMap type="com.ruoyi.framework.task.vo.ProdVo" id="PlatformKeepResult_">
+        <result property="name"    column="ptitle"    />
+        <result property="rands"    column="rands"    />
+        <result property="bidPrice"    column="bid_price"    />
+        <result property="askPrice"    column="ask_price"    />
+        <result property="pid"    column="pid"    />
+        <result property="decimalPlaces"    column="decimal_places"    />
+        <result property="proCode"    column="procode"    />
+        <result property="price"    column="price"    />
+        <result property="picUrl"    column="pic_url"    />
+        <result property="type"    column="type"    />
+        <result property="name"    column="ptitle"    />
+        <result property="fullName"    column="full_name"    />
+    </resultMap>
+
+    <select id="queryAllTopProd" resultMap="PlatformKeepResult_">
+        SELECT
+            pd.ptitle,
+            pd.pid,
+            pd.decimal_places,
+            pd.procode,
+            pd.pic_url,
+            pd.type,
+            pd.ptitle,
+            pd.full_name
+        FROM
+            platform_product_info pd
+        where pd.top_or_not = '1'
+        order by pd.seq asc
+    </select>
+
+    <select id="queryAllProd" resultMap="PlatformKeepResult_">
+        SELECT
+            pd.ptitle,
+            pd.pid,
+            pd.decimal_places,
+            pd.procode,
+            pd.pic_url,
+            pd.type,
+            pd.ptitle,
+            pd.full_name
+        FROM
+            platform_product_info pd
+        order by pd.seq asc
+    </select>
+
+    <select id="queryAllProdByProdCode" resultMap="PlatformKeepResult_">
+        SELECT
+            pd.ptitle,
+            pd.pid,
+            pd.decimal_places,
+            pd.procode,
+            pd.pic_url,
+            pd.type,
+            pd.ptitle,
+            pd.full_name
+        FROM
+            platform_product_info pd
+            where pd.procode like concat('%', #{procode}, '%')
+        order by pd.seq asc
+    </select>
+
+    <select id="queryAllPc" resultMap="PlatformKeepResult_">
+        SELECT
+            pd.ptitle,
+            pd.pid,
+            pd.decimal_places,
+            pd.procode,
+            pd.pic_url,
+            pd.type,
+            pd.ptitle,
+            pd.full_name
+        FROM
+            platform_product_info pd
+            where pd.pc_index='1'
+        order by pd.seq asc
+    </select>
+
+    <sql id="selectPlatformProductinfoVo">
+        select pid, ptitle, commission, otid, isopen, type, point_low, point_top, rands, money_list, isdelete, procode, gearing, hand_money, add_data, protime, propoint, proscale, top_or_not, is_index, create_time, min_order, max_order, remark,pic_url,point_money,decimal_places,
+        full_name,seq,pc_index
+        from platform_product_info
+    </sql>
+
+    <select id="selectPlatformProductinfoList" parameterType="PlatformProductInfo" resultMap="PlatformProductinfoResult">
+        <include refid="selectPlatformProductinfoVo"/>
+        <where>
+            <if test="ptitle != null  and ptitle != ''"> and ptitle = #{ptitle}</if>
+            <if test="commission != null "> and commission = #{commission}</if>
+            <if test="otid != null "> and otid = #{otid}</if>
+            <if test="isopen != null "> and isopen = #{isopen}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="pointLow != null  and pointLow != ''"> and point_low = #{pointLow}</if>
+            <if test="pointTop != null  and pointTop != ''"> and point_top = #{pointTop}</if>
+            <if test="rands != null  and rands != ''"> and rands = #{rands}</if>
+            <if test="moneyList != null  and moneyList != ''"> and money_list = #{moneyList}</if>
+            <if test="isdelete != null "> and isdelete = #{isdelete}</if>
+            <if test="procode != null  and procode != ''"> and procode like concat('%', #{procode}, '%')</if>
+            <if test="gearing != null "> and gearing = #{gearing}</if>
+            <if test="handMoney != null "> and hand_money = #{handMoney}</if>
+            <if test="addData != null "> and add_data = #{addData}</if>
+            <if test="protime != null  and protime != ''"> and protime = #{protime}</if>
+            <if test="propoint != null  and propoint != ''"> and propoint = #{propoint}</if>
+            <if test="proscale != null  and proscale != ''"> and proscale = #{proscale}</if>
+            <if test="topOrNot != null  and topOrNot != ''"> and top_or_not = #{topOrNot}</if>
+            <if test="isIndex != null  and isIndex != ''"> and is_index = #{isIndex}</if>
+            <if test="minOrder != null "> and min_order = #{minOrder}</if>
+            <if test="maxOrder != null "> and max_order = #{maxOrder}</if>
+            <if test="pcIndex != null  and pcIndex != ''"> and pc_index = #{pcIndex}</if>
+        </where>
+        ORDER BY seq asc
+    </select>
+
+    <select id="selectIndexProd" resultMap="PlatformProductinfoResult_"  parameterType="java.util.HashMap">
+        SELECT
+        	prd.pid,
+        	prd.pic_url,
+			prd.ptitle,
+			pdd.price,
+			pdd.rands,
+			prd.procode,
+			prd.decimal_places,
+			prd.point_money,
+			prd.full_name
+		FROM
+			platform_product_info prd
+		LEFT JOIN platform_product_data pdd ON prd.pid = pdd.pid
+        <where>
+            <if test="isopen != null "> and prd.isopen = #{isopen}</if>
+            <if test="pid != null "> and prd.pid = #{pid}</if>
+            <if test="type != null  and type != ''"> and prd.type = #{type}</if>
+            <if test="topOrNot != null  and topOrNot != ''"> and prd.top_or_not = #{topOrNot}</if>
+            <if test="isIndex != null  and isIndex != ''"> and prd.is_index = #{isIndex}</if>
+            <if test="productName != null  and productName != ''"> and (prd.ptitle_en like concat('%', #{productName},
+				'%') or prd.ptitle like concat('%', #{productName},
+				'%') or prd.ptitle_tw like concat('%', #{productName},
+				'%')) </if>
+        </where>
+        ORDER BY prd.seq asc
+    </select>
+
+    <select id="selectPlatformProductInfoById" parameterType="Long" resultMap="PlatformProductinfoResult">
+        <include refid="selectPlatformProductinfoVo"/>
+        where pid = #{pid}
+    </select>
+
+    <insert id="insertPlatformProductinfo" parameterType="PlatformProductInfo" useGeneratedKeys="true" keyProperty="pid">
+        insert into platform_product_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ptitle != null  and ptitle != ''">ptitle,</if>
+            <if test="commission != null ">commission,</if>
+            <if test="otid != null ">otid,</if>
+            <if test="isopen != null ">isopen,</if>
+            <if test="type != null  and type != ''">type,</if>
+            <if test="pointLow != null  and pointLow != ''">point_low,</if>
+            <if test="pointTop != null  and pointTop != ''">point_top,</if>
+            <if test="rands != null  and rands != ''">rands,</if>
+            <if test="moneyList != null  and moneyList != ''">money_list,</if>
+            <if test="isdelete != null ">isdelete,</if>
+            <if test="procode != null  and procode != ''">procode,</if>
+            <if test="gearing != null ">gearing,</if>
+            <if test="handMoney != null ">hand_money,</if>
+            <if test="addData != null ">add_data,</if>
+            <if test="protime != null  and protime != ''">protime,</if>
+            <if test="propoint != null  and propoint != ''">propoint,</if>
+            <if test="proscale != null  and proscale != ''">proscale,</if>
+            <if test="topOrNot != null  and topOrNot != ''">top_or_not,</if>
+            <if test="isIndex != null  and isIndex != ''">is_index,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="minOrder != null ">min_order,</if>
+            <if test="maxOrder != null ">max_order,</if>
+            <if test="remark != null  and remark != ''">remark,</if>
+            <if test="picUrl != null  and picUrl != ''">pic_url,</if>
+            <if test="pointMoney != null  ">point_money,</if>
+            <if test="decimalPlaces != null  ">decimal_places,</if>
+            <if test="fullName != null  and fullName != ''">full_name,</if>
+            <if test="seq != null  ">seq,</if>
+            <if test="pcIndex != null  and pcIndex != ''">pc_index,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ptitle != null  and ptitle != ''">#{ptitle},</if>
+            <if test="commission != null ">#{commission},</if>
+            <if test="otid != null ">#{otid},</if>
+            <if test="isopen != null ">#{isopen},</if>
+            <if test="type != null  and type != ''">#{type},</if>
+            <if test="pointLow != null  and pointLow != ''">#{pointLow},</if>
+            <if test="pointTop != null  and pointTop != ''">#{pointTop},</if>
+            <if test="rands != null  and rands != ''">#{rands},</if>
+            <if test="moneyList != null  and moneyList != ''">#{moneyList},</if>
+            <if test="isdelete != null ">#{isdelete},</if>
+            <if test="procode != null  and procode != ''">#{procode},</if>
+            <if test="gearing != null ">#{gearing},</if>
+            <if test="handMoney != null ">#{handMoney},</if>
+            <if test="addData != null ">#{addData},</if>
+            <if test="protime != null  and protime != ''">#{protime},</if>
+            <if test="propoint != null  and propoint != ''">#{propoint},</if>
+            <if test="proscale != null  and proscale != ''">#{proscale},</if>
+            <if test="topOrNot != null  and topOrNot != ''">#{topOrNot},</if>
+            <if test="isIndex != null  and isIndex != ''">#{isIndex},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="minOrder != null ">#{minOrder},</if>
+            <if test="maxOrder != null ">#{maxOrder},</if>
+            <if test="remark != null  and remark != ''">#{remark},</if>
+            <if test="picUrl != null  and picUrl != ''">#{picUrl},</if>
+            <if test="pointMoney != null  ">#{pointMoney},</if>
+            <if test="decimalPlaces != null  ">#{decimalPlaces},</if>
+            <if test="fullName != null  and fullName != ''">#{fullName},</if>
+            <if test="seq != null  ">#{seq},</if>
+            <if test="pcIndex != null  and pcIndex != ''">#{pcIndex},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePlatformProductinfo" parameterType="PlatformProductInfo">
+        update platform_product_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="ptitle != null  and ptitle != ''">ptitle = #{ptitle},</if>
+            <if test="commission != null ">commission = #{commission},</if>
+            <if test="otid != null ">otid = #{otid},</if>
+            <if test="isopen != null ">isopen = #{isopen},</if>
+            <if test="type != null  and type != ''">type = #{type},</if>
+            <if test="pointLow != null  and pointLow != ''">point_low = #{pointLow},</if>
+            <if test="pointTop != null  and pointTop != ''">point_top = #{pointTop},</if>
+            <if test="rands != null  and rands != ''">rands = #{rands},</if>
+            <if test="moneyList != null  and moneyList != ''">money_list = #{moneyList},</if>
+            <if test="isdelete != null ">isdelete = #{isdelete},</if>
+            <if test="procode != null  and procode != ''">procode = #{procode},</if>
+            <if test="gearing != null ">gearing = #{gearing},</if>
+            <if test="handMoney != null ">hand_money = #{handMoney},</if>
+            <if test="addData != null ">add_data = #{addData},</if>
+            <if test="protime != null  and protime != ''">protime = #{protime},</if>
+            <if test="propoint != null  and propoint != ''">propoint = #{propoint},</if>
+            <if test="proscale != null  and proscale != ''">proscale = #{proscale},</if>
+            <if test="topOrNot != null  and topOrNot != ''">top_or_not = #{topOrNot},</if>
+            <if test="isIndex != null  and isIndex != ''">is_index = #{isIndex},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="minOrder != null ">min_order = #{minOrder},</if>
+            <if test="maxOrder != null ">max_order = #{maxOrder},</if>
+            <if test="remark != null  and remark != ''">remark = #{remark},</if>
+            <if test="picUrl != null  and picUrl != ''">pic_url = #{picUrl},</if>
+            <if test="pointMoney != null  ">point_money = #{pointMoney},</if>
+            <if test="decimalPlaces != null  ">decimal_places = #{decimalPlaces},</if>
+            <if test="fullName != null  and fullName != ''">full_name = #{fullName},</if>
+            <if test="seq != null  ">seq = #{seq},</if>
+            <if test="pcIndex != null  and pcIndex != ''">pc_index = #{pcIndex},</if>
+        </trim>
+        where pid = #{pid}
+    </update>
+
+    <delete id="deletePlatformProductinfoById" parameterType="Long">
+        delete from platform_product_info where pid = #{pid}
+    </delete>
+
+    <delete id="deletePlatformProductinfoByIds" parameterType="String">
+        delete from platform_product_info where pid in
+        <foreach item="pid" collection="array" open="(" separator="," close=")">
+            #{pid}
+        </foreach>
+    </delete>
+
+</mapper>

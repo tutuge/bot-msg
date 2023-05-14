@@ -1,0 +1,145 @@
+# 项目相关配置
+ruoyi:
+  # 名称
+  name: RuoYi
+  # 版本
+  version: 2.2.0
+  # 版权年份
+  copyrightYear: 2019
+  # 实例演示开关
+  demoEnabled: true
+  # 文件路径 示例（ Windows配置D:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
+  #profile: D:/ruoyi/uploadPath
+  profile: /home/file
+  #profile: D:/ruoyi/uploadPath
+  # 获取ip地址开关
+  addressEnabled: true
+
+# 开发环境配置
+server:
+  # 服务器的HTTP端口，默认为8080
+  port: 8080
+  servlet:
+    # 应用的访问路径
+    context-path: /
+  tomcat:
+    # tomcat的URI编码
+    uri-encoding: UTF-8
+    threads:
+      max: 200     # tomcat最大线程数，默认为200
+      min-spare: 30     # Tomcat启动初始化的线程数，默认值25
+
+# 日志配置
+logging:
+  level:
+    com.ruoyi: info
+    com.ruoyi.framework.security.filter: warn
+    org.springframework: warn
+
+# Spring配置
+spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+  main:
+    allow-circular-references: true
+  #十分坑的配置，springboot高版本需要配置这个，不然表单提交接收不到传参
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+    hiddenmethod:
+      filter:
+        enabled: true
+  # 资源信息
+  messages:
+    # 国际化资源文件路径
+    basename: i18n/messages
+  profiles:
+    active: druid
+  # 文件上传
+  servlet:
+    multipart:
+      # 单个文件大小
+      max-file-size: 10MB
+      # 设置总上传的文件大小
+      max-request-size: 20MB
+  # 服务模块
+  devtools:
+    restart:
+      # 热部署开关
+      enabled: true
+  # redis 配置
+  redis:
+    #配置使用的database
+    database: 8
+    # 地址
+    host: 127.0.0.1
+    # 端口，默认为6379
+    port: 6379
+    # 密码
+    #password:
+    # 连接超时时间
+    timeout: 10s
+  jmx:
+    enabled: false
+# token配置
+token:
+  # 令牌自定义标识
+  header: Authorization
+  # 令牌秘钥
+  secret: abcdefghijklmnopqrstuvwxyz
+  # 令牌有效期（默认30分钟）
+  expireTime: 1440
+  third: AccessToken
+
+mybatis-plus:
+  type-aliases-package: com.ruoyi.project.**.domain
+  mapper-locations: classpath*:mybatis/**/*Mapper.xml
+  config-location: classpath:mybatis/mybatis-config.xml
+
+# PageHelper分页插件
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+# 防止XSS攻击
+xss:
+  # 过滤开关
+  enabled: true
+  # 排除链接（多个用逗号分隔）
+  excludes: /system/notice/*,/system/text/*,/system/timezd/*,/system/information/*,/api/customer/loan,/system/answerarea/*
+  # 匹配链接
+  urlPatterns: /system/*,/monitor/*,/tool/*,/api/*
+
+# redisson 配置
+redisson:
+  # 线程池数量
+  threads: 4
+  # Netty线程池数量
+  nettyThreads: 8
+  # 单节点配置
+  singleServerConfig:
+    # 客户端名称
+    clientName: blind_box
+    # 最小空闲连接数
+    connectionMinimumIdleSize: 8
+    # 连接池大小
+    connectionPoolSize: 32
+    # 连接空闲超时，单位：毫秒
+    idleConnectionTimeout: 10000
+    # 命令等待超时，单位：毫秒
+    timeout: 3000
+    # 发布和订阅连接池大小
+    subscriptionConnectionPoolSize: 50
+  # redisson 缓存配置
+  cacheGroup:
+    # 用例: @Cacheable(cacheNames="groupId", key="#XXX") 方可使用缓存组配置
+    - groupId: redissonCacheMap
+      # 组过期时间(脚本监控)
+      ttl: 60000
+      # 组最大空闲时间(脚本监控)
+      maxIdleTime: 60000
+      # 组最大长度
+      maxSize: 0
+

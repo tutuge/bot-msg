@@ -1,0 +1,9 @@
+aggregation_ui/dist/*
+aggregation_ui/node_modules/*
+aggregation/.idea/*
+aggregation/target/*
+*.iml
+.idea
+/.idea
+*.pdf
+/target/

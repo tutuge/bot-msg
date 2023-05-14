@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>oauth github</title>
+</head>
+<body>
+OK...
+<script th:inline="javascript">
+    var token = [[${token}]];
+    var domainName = [[${domainName}]];
+    var t = {
+        "token":token
+    }
+    console.log("token:" + token)
+    console.log("使用的域名:" + domainName)
+    //https://developer.mozilla.org/zh-CN/docs/Web/API/Window/postMessage 文档 跨源传递消息
+    //https://wangdoc.com/javascript/bom/same-origin.html#windowpostmessage 示例
+    window.onload = function () {
+        //这里需要注意的是修改域名+端口，都必须一致才行
+        // window.opener.postMessage({"token":token}, "https://box-worker.com/box/#");
+        // window.close();
+        window.location.href = domainName+"/#/home?token=" + token
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.mapper.CurrencyMapper">
+
+    <resultMap type="com.ruoyi.project.system.domain.Currency" id="CurrencyResult">
+        <result property="id" column="id"/>
+        <result property="currencyName" column="currency_name"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="picUrl" column="pic_url"/>
+        <result property="fullName" column="full_name"/>
+        <result property="exchangeRate" column="exchange_rate"/>
+        <result property="seqNum" column="seq_num"/>
+        <result property="isRecharge" column="is_recharge"/>
+        <result property="isCash" column="is_cash"/>
+        <result property="isExchange" column="is_exchange"/>
+        <result property="maxBetMoney" column="max_bet_money"/>
+        <result property="maxProfit" column="max_profit"/>
+        <result property="minBetMoney" column="min_bet_money"/>
+    </resultMap>
+
+
+</mapper>

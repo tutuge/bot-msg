@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.mapper.SysOnlineMapper">
+
+    <resultMap type="SysOnline" id="SysOnlineResult">
+        <result property="id" column="id"/>
+        <result property="address" column="address"/>
+        <result property="ipaddr" column="ipaddr"/>
+        <result property="loginLocation" column="login_location"/>
+        <result property="browser" column="browser"/>
+        <result property="os" column="os"/>
+        <result property="status" column="status"/>
+        <result property="loginTime" column="login_time"/>
+        <result property="userId" column="user_id"/>
+    </resultMap>
+
+    <sql id="selectSysOnlineVo">
+        select id,
+               address,
+               ipaddr,
+               login_location,
+               browser,
+               os,
+               status,
+               login_time,
+               user_id
+        from sys_online
+    </sql>
+
+    <select id="selectSysOnlineList" parameterType="SysOnline" resultMap="SysOnlineResult">
+        <include refid="selectSysOnlineVo"/>
+        <where>
+            <if test="address != null  and address != ''">and address = #{address}</if>
+            <if test="ipaddr != null  and ipaddr != ''">and ipaddr = #{ipaddr}</if>
+            <if test="loginLocation != null  and loginLocation != ''">and login_location = #{loginLocation}</if>
+            <if test="browser != null  and browser != ''">and browser = #{browser}</if>
+            <if test="os != null  and os != ''">and os = #{os}</if>
+            <if test="status != null  and status != ''">and status = #{status}</if>
+            <if test="loginTime != null ">and login_time = #{loginTime}</if>
+            <if test="userId != null ">and user_id = #{userId}</if>
+        </where>
+        order by login_time desc
+    </select>
+
+    <select id="selectSysOnlineById" parameterType="Long" resultMap="SysOnlineResult">
+        <include refid="selectSysOnlineVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSysOnline" parameterType="SysOnline" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_online
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="address != null  and address != ''">address,</if>
+            <if test="ipaddr != null  and ipaddr != ''">ipaddr,</if>
+            <if test="loginLocation != null  and loginLocation != ''">login_location,</if>
+            <if test="browser != null  and browser != ''">browser,</if>
+            <if test="os != null  and os != ''">os,</if>
+            <if test="status != null  and status != ''">status,</if>
+            <if test="loginTime != null ">login_time,</if>
+            <if test="userId != null ">user_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="address != null  and address != ''">#{address},</if>
+            <if test="ipaddr != null  and ipaddr != ''">#{ipaddr},</if>
+            <if test="loginLocation != null  and loginLocation != ''">#{loginLocation},</if>
+            <if test="browser != null  and browser != ''">#{browser},</if>
+            <if test="os != null  and os != ''">#{os},</if>
+            <if test="status != null  and status != ''">#{status},</if>
+            <if test="loginTime != null ">#{loginTime},</if>
+            <if test="userId != null ">#{userId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSysOnline" parameterType="SysOnline">
+        update sys_online
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="address != null  and address != ''">address = #{address},</if>
+            <if test="ipaddr != null  and ipaddr != ''">ipaddr = #{ipaddr},</if>
+            <if test="loginLocation != null  and loginLocation != ''">login_location = #{loginLocation},</if>
+            <if test="browser != null  and browser != ''">browser = #{browser},</if>
+            <if test="os != null  and os != ''">os = #{os},</if>
+            <if test="status != null  and status != ''">status = #{status},</if>
+            <if test="loginTime != null ">login_time = #{loginTime},</if>
+            <if test="userId != null ">user_id = #{userId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysOnlineById" parameterType="Long">
+        delete
+        from sys_online
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteSysOnlineByIds" parameterType="String">
+        delete from sys_online where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
