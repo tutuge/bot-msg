@@ -213,7 +213,7 @@ public class SysConfigServiceImpl implements ISysConfigService {
                 // 校验谷歌验证码
                 if (googleCode != null && !"".equals(googleCode)) {
                     if (isNumeric(googleCode)) {
-                        boolean flag = GoogleAuthUtil.check_code(sysUser.getGoogleKey(), Integer.parseInt(googleCode));
+                        boolean flag = GoogleAuthUtil.checkCode(sysUser.getGoogleKey(), Integer.parseInt(googleCode));
                         if (!flag) {
                             throw new RuntimeException("谷歌验证码错误");
                         }

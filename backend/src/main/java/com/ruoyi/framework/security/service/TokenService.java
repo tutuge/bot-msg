@@ -14,6 +14,7 @@ import com.ruoyi.framework.redis.RedisCache;
 import com.ruoyi.framework.security.LoginUser;
 import com.ruoyi.framework.security.ThirdLoginUser;
 import com.ruoyi.project.system.domain.PlatformUser;
+import com.ruoyi.project.system.service.IPlatformUserService;
 import eu.bitwalker.useragentutils.UserAgent;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

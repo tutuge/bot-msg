@@ -42,7 +42,7 @@ public class GoogleAuthUtil {
      * @param code
      * @return
      */
-    public static boolean check_code(String secret, int code) {
+    public static boolean checkCode(String secret, int code) {
         GoogleAuthenticator gAuth = new GoogleAuthenticator();
         boolean isCodeValid = gAuth.authorize(secret, code);
         return isCodeValid;
