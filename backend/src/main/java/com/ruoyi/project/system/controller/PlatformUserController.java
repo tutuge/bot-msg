@@ -56,6 +56,14 @@ public class PlatformUserController extends BaseController {
     }
 
     /**
+     * 获取平台前端用户详细信息
+     */
+    @DeleteMapping(value = "/{userId}")
+    public AjaxResult delete(@PathVariable("userId") Long userId) {
+        return AjaxResult.success(platformUserService.deletePlatformUserById(userId));
+    }
+
+    /**
      * 新增平台前端用户
      */
     @Log(title = "平台前端用户", businessType = BusinessType.INSERT)

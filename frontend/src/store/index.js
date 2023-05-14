@@ -5,7 +5,6 @@ import user from './modules/user'
 import tagsView from './modules/tagsView'
 import permission from './modules/permission'
 import settings from './modules/settings'
-import socketVuex from './modules/socketVuex'
 import getters from './getters'
 
 Vue.use(Vuex)
@@ -16,8 +15,7 @@ const store = new Vuex.Store({
     user,
     tagsView,
     permission,
-    settings,
-    socketVuex
+    settings
   },
   getters
 })
