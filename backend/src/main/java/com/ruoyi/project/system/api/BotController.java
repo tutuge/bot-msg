@@ -2,11 +2,10 @@ package com.ruoyi.project.system.api;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.ruoyi.framework.web.controller.BaseController;
-import com.ruoyi.project.system.api.bo.QueryBo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -22,9 +21,13 @@ public class BotController extends BaseController {
 
 
     @PostMapping("msg")
-    public JSONObject add(@RequestBody QueryBo queryBo) {
-        log.info("收到的消息-->{}", queryBo);
-        String message = queryBo.getMessage();
+    public JSONObject add(@RequestParam(name = "app") String app,
+                          @RequestParam("sender") String sender,
+                          @RequestParam("message") String message,
+                          @RequestParam(name = "group_name", required = false) String groupName,
+                          @RequestParam(name = "phone", required = false) String phone
+    ) {
+        log.info("收到的消息-->{}", message);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("reply", message);
         return jsonObject;
