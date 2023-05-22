@@ -8,3 +8,4 @@ aggregation/target/*
 *.pdf
 /target/
 /backend/src/test/
+/logs/

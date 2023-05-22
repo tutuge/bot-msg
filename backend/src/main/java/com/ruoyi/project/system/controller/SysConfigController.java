@@ -34,9 +34,9 @@ public class SysConfigController extends BaseController {
         startPage();
         if (config.getIsSys() != null && "1".equals(config.getIsSys())) {
             List<SysConfig> list = configService.selectConfigListZd(config);
-            for (int i = 0; i < list.size(); i++) {
-                if ("private_key".equals(list.get(i).getConfigKey()) || "node_url".equals(list.get(i).getConfigKey())) {
-                    list.get(i).setConfigValue("****************");
+            for (SysConfig sysConfig : list) {
+                if ("private_key".equals(sysConfig.getConfigKey()) || "node_url".equals(sysConfig.getConfigKey())) {
+                    sysConfig.setConfigValue("****************");
                 }
             }
             return getDataTable(list);
@@ -46,9 +46,9 @@ public class SysConfigController extends BaseController {
             return getDataTable(list);
         } else {
             List<SysConfig> list = configService.selectConfigList(config);
-            for (int i = 0; i < list.size(); i++) {
-                if ("private_key".equals(list.get(i).getConfigKey()) || "node_url".equals(list.get(i).getConfigKey())) {
-                    list.get(i).setConfigValue("****************");
+            for (SysConfig sysConfig : list) {
+                if ("private_key".equals(sysConfig.getConfigKey()) || "node_url".equals(sysConfig.getConfigKey())) {
+                    sysConfig.setConfigValue("****************");
                 }
             }
             return getDataTable(list);

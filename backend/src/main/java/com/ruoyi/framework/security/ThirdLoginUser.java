@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.StringJoiner;
 
 /**
  * 登录用户身份权限
@@ -87,5 +88,12 @@ public class ThirdLoginUser implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", ThirdLoginUser.class.getSimpleName() + "[", "]")
+                .add("user=" + user)
+                .toString();
     }
 }

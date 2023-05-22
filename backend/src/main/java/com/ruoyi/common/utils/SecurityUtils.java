@@ -3,6 +3,7 @@ package com.ruoyi.common.utils;
 import com.ruoyi.common.constant.HttpStatus;
 import com.ruoyi.common.exception.CustomException;
 import com.ruoyi.framework.security.LoginUser;
+import com.ruoyi.framework.security.ThirdLoginUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -32,6 +33,17 @@ public class SecurityUtils {
             return (LoginUser) getAuthentication().getPrincipal();
         } catch (Exception e) {
             throw new CustomException("获取用户信息异常", HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    /**
+     * 获取用户
+     **/
+    public static ThirdLoginUser getThirdLoginUser() {
+        try {
+            return (ThirdLoginUser) getAuthentication().getPrincipal();
+        } catch (Exception e) {
+            throw new CustomException("获取第三方用户信息异常", HttpStatus.UNAUTHORIZED);
         }
     }
 

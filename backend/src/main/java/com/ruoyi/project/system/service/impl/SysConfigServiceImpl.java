@@ -132,11 +132,11 @@ public class SysConfigServiceImpl implements ISysConfigService {
     public SysConfig selectConfigById(Long configId) {
         SysConfig config = new SysConfig();
         config.setConfigId(configId);
-        SysConfig config_ = configMapper.selectConfig(config);
-        if ("private_key".equals(config_.getConfigKey()) || "node_url".equals(config_.getConfigKey())) {
-            config_.setConfigValue("************");
+        SysConfig sysConfig = configMapper.selectConfig(config);
+        if ("private_key".equals(sysConfig.getConfigKey()) || "node_url".equals(sysConfig.getConfigKey())) {
+            sysConfig.setConfigValue("************");
         }
-        return config_;
+        return sysConfig;
     }
 
     /**
@@ -201,10 +201,11 @@ public class SysConfigServiceImpl implements ISysConfigService {
     public int updateConfig(SysConfig config) {
         //获取old
         LoginUser user = SecurityUtils.getLoginUser();
-        SysConfig model_o = new SysConfig();
-        model_o.setConfigKey(config.getConfigKey());
-        SysConfig configOld = configMapper.selectConfig(model_o);
-        if ("address_to".equalsIgnoreCase(config.getConfigKey()) || "address_to_tron".equalsIgnoreCase(config.getConfigKey())) {
+        SysConfig modelOld = new SysConfig();
+        String configKey = config.getConfigKey();
+        modelOld.setConfigKey(configKey);
+        SysConfig configOld = configMapper.selectConfig(modelOld);
+        if ("address_to".equalsIgnoreCase(configKey) || "address_to_tron".equalsIgnoreCase(configKey)) {
             String googleCode = config.getGoogleCode();
             if (user != null) {
                 // 获取当前用户ID
@@ -228,7 +229,7 @@ public class SysConfigServiceImpl implements ISysConfigService {
             }
         }
         // 针对全局利率做校验
-        if ("mining_set".equalsIgnoreCase(config.getConfigKey())) {
+        if ("mining_set".equalsIgnoreCase(configKey)) {
             if (config.getConfigValue() != null && !"".equals(config.getConfigValue())) {
                 if (isChinese(config.getConfigValue())) {
                     throw new RuntimeException("包含中文或中文标点符号，请查证");
@@ -241,12 +242,12 @@ public class SysConfigServiceImpl implements ISysConfigService {
         }
         if (config.getConfigValue().contains("*")) {
             SysConfig model = new SysConfig();
-            model.setConfigKey(config.getConfigKey());
+            model.setConfigKey(configKey);
             SysConfig retConfig = configMapper.selectConfig(config);
             config.setConfigValue(retConfig.getConfigValue());
         }
         if (checkBase64(config.getConfigValue())) {
-            if ("private_key".equals(config.getConfigKey())) {
+            if ("private_key".equals(configKey)) {
                 try {
                     // 需要加密存库
                     config.setConfigValue(encryptBASE64(config.getConfigValue().getBytes()));
@@ -257,10 +258,10 @@ public class SysConfigServiceImpl implements ISysConfigService {
         }
         // 不判断存不存在缓存，有最新的直接放最新的到缓存中
         if (config.getConfigValue() != null && !"".equals(config.getConfigValue())) {
-            redisCache.setCacheObject(config.getConfigKey(), config.getConfigValue());
+            redisCache.setCacheObject(configKey, config.getConfigValue());
         }
         int num = configMapper.updateConfig(config);
-        if ("address_to".equalsIgnoreCase(config.getConfigKey()) || "address_to_tron".equalsIgnoreCase(config.getConfigKey())) {
+        if ("address_to".equalsIgnoreCase(configKey) || "address_to_tron".equalsIgnoreCase(configKey)) {
             String key = this.selectConfigByKey("tele_key");
             String newStr = config.getConfigValue();
             if (newStr != null && !newStr.equals(configOld.getConfigValue())) {
