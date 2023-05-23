@@ -79,6 +79,7 @@ public class MsgMatchServiceImpl implements MsgMatchService, ApplicationRunner {
         msgBo.setReceiver(receiver);
 
         MsgArrBo msgArr = getMsgArr(msgs, msgBo.hashCode());
+        log.info("前置匹配到的消息为--->{}", msgArr);
         if (ObjectUtil.isNotNull(msgArr)) {
             Set<MsgBo> set = msgArr.getSet();
             for (MsgBo msg : set) {

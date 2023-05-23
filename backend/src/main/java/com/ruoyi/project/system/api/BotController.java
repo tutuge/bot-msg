@@ -1,5 +1,6 @@
 package com.ruoyi.project.system.api;
 
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSONObject;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.framework.security.ThirdLoginUser;
@@ -32,18 +33,16 @@ public class BotController extends BaseController {
                           @RequestParam(name = "group_name", required = false) String groupName,
                           @RequestParam(name = "phone", required = false) String phone
     ) {
-        log.info("收到的app-->{}", app);
-        log.info("收到的sender-->{}", sender);
-        log.info("收到的消息-->{}", message);
-        log.info("收到的groupName-->{}", groupName);
-        log.info("收到的phone-->{}", phone);
-
         ThirdLoginUser thirdLoginUser = SecurityUtils.getThirdLoginUser();
-        log.info("thirdLoginUser-->{}", thirdLoginUser);
+        log.info("收到的app-->{}  sender-->{}  消息-->{}  groupName-->{}  phone-->{}  thirdLoginUser-->{}",
+                app, sender, message, groupName, phone, thirdLoginUser);
+
         String username = thirdLoginUser.getUsername();
         String reply = msgMatchService.reply(app, sender, message, groupName, username);
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("reply", reply);
+        if (StrUtil.isNotBlank(reply)) {
+            jsonObject.put("reply", reply);
+        }
         return jsonObject;
     }
 }
