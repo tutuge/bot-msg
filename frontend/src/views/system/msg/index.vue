@@ -182,12 +182,12 @@
           <el-input v-model="form.appName" placeholder="请输入app名称"/>
         </el-form-item>
         <el-form-item label="发送人" prop="sender">
-          <el-select v-model="form.sender" placeholder="请选择发送人" @change="senderChange" clearable size="small">
+          <el-select v-model="form.senderId" placeholder="请选择发送人" @change="senderChange" clearable size="small">
             <el-option
                 v-for="user in platformUser"
                 :key="user.userId"
                 :label="user.userName"
-                :value="user"
+                :value="user.userId"
             />
           </el-select>
         </el-form-item>
@@ -198,12 +198,12 @@
           <el-input v-model="form.groupName" placeholder="请输入组群名"/>
         </el-form-item>
         <el-form-item label="接收人" prop="receiver">
-          <el-select v-model="form.receiver" placeholder="请选择接收人" @change="receiverChange" clearable size="small">
+          <el-select v-model="form.receiverId" placeholder="请选择接收人" @change="receiverChange" clearable size="small">
             <el-option
                 v-for="user in platformUser"
                 :key="user.userId"
                 :label="user.userName"
-                :value="user"
+                :value="user.userId"
             />
           </el-select>
         </el-form-item>
