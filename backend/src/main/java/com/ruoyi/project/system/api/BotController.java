@@ -1,7 +1,6 @@
 package com.ruoyi.project.system.api;
 
 import com.alibaba.fastjson2.JSONObject;
-import com.ruoyi.common.utils.IdUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.framework.security.ThirdLoginUser;
 import com.ruoyi.framework.web.controller.BaseController;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/bot/")
 public class BotController extends BaseController {
 
-
     @PostMapping("msg")
     public JSONObject add(@RequestParam(name = "app") String app,
                           @RequestParam("sender") String sender,
@@ -30,7 +28,6 @@ public class BotController extends BaseController {
                           @RequestParam(name = "group_name", required = false) String groupName,
                           @RequestParam(name = "phone", required = false) String phone
     ) {
-
         log.info("收到的app-->{}", app);
         log.info("收到的sender-->{}", sender);
         log.info("收到的消息-->{}", message);
@@ -40,6 +37,8 @@ public class BotController extends BaseController {
         jsonObject.put("reply", message);
         ThirdLoginUser thirdLoginUser = SecurityUtils.getThirdLoginUser();
         log.info("thirdLoginUser-->{}", thirdLoginUser);
+        String username = thirdLoginUser.getUsername();
+
         return jsonObject;
     }
 }
