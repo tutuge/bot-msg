@@ -85,12 +85,12 @@ export const constantRoutes = [
     hidden: true,
     redirect: 'noredirect',
     children: [
-      {
-        path: 'network',
-        component: () => import('@/views/system/network/index'),
-        name: 'Network',
-        meta: { title: '充值网络', icon: 'user' }
-      }
+      // {
+      //   path: 'network',
+      //   component: () => import('@/views/system/network/index'),
+      //   name: 'Network',
+      //   meta: { title: '充值网络', icon: 'user' }
+      // }
     ]
   },
   {
@@ -99,12 +99,12 @@ export const constantRoutes = [
     hidden: true,
     redirect: 'noredirect',
     children: [
-      {
-        path: 'networktx',
-        component: () => import('@/views/system/networktx/index'),
-        name: 'NetworkTx',
-        meta: { title: '提现网络', icon: 'user' }
-      }
+      // {
+      //   path: 'networktx',
+      //   component: () => import('@/views/system/networktx/index'),
+      //   name: 'NetworkTx',
+      //   meta: { title: '提现网络', icon: 'user' }
+      // }
     ]
   },
   {

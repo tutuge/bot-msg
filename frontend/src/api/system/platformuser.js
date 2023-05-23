@@ -9,6 +9,14 @@ export function listUser(query) {
   })
 }
 
+// 查询平台前端用户列表简易信息
+export function listSimpleUser() {
+  return request({
+    url: '/system/platuser/listSimple',
+    method: 'get'
+  })
+}
+
 // 查询用户等级列表
 export function listLevel(query) {
   return request({

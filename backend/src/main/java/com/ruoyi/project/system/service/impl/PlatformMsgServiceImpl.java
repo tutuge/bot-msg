@@ -1,8 +1,10 @@
 package com.ruoyi.project.system.service.impl;
 
+import cn.hutool.core.util.IdUtil;
 import com.ruoyi.project.system.domain.PlatformMsg;
 import com.ruoyi.project.system.mapper.PlatformMsgMapper;
 import com.ruoyi.project.system.service.IPlatformMsgService;
+import com.ruoyi.project.system.service.MsgMatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,8 @@ import java.util.List;
  */
 @Service
 public class PlatformMsgServiceImpl implements IPlatformMsgService {
+    @Autowired
+    private MsgMatchService msgMatchService;
     @Autowired
     private PlatformMsgMapper platformMsgMapper;
 
@@ -49,6 +53,8 @@ public class PlatformMsgServiceImpl implements IPlatformMsgService {
      */
     @Override
     public int insertPlatformMsg(PlatformMsg platformMsg) {
+        platformMsg.setId(IdUtil.getSnowflakeNextId());
+        msgMatchService.addMsg(platformMsg);
         return platformMsgMapper.insertPlatformMsg(platformMsg);
     }
 
@@ -60,6 +66,7 @@ public class PlatformMsgServiceImpl implements IPlatformMsgService {
      */
     @Override
     public int updatePlatformMsg(PlatformMsg platformMsg) {
+        msgMatchService.updateMsg(platformMsg);
         return platformMsgMapper.updatePlatformMsg(platformMsg);
     }
 
@@ -71,6 +78,10 @@ public class PlatformMsgServiceImpl implements IPlatformMsgService {
      */
     @Override
     public int deletePlatformMsgByIds(Long[] ids) {
+        for (Long id : ids) {
+            PlatformMsg platformMsg = selectPlatformMsgById(id);
+            msgMatchService.removeMsg(platformMsg);
+        }
         return platformMsgMapper.deletePlatformMsgByIds(ids);
     }
 
@@ -82,6 +93,8 @@ public class PlatformMsgServiceImpl implements IPlatformMsgService {
      */
     @Override
     public int deletePlatformMsgById(Long id) {
+        PlatformMsg platformMsg = selectPlatformMsgById(id);
+        msgMatchService.removeMsg(platformMsg);
         return platformMsgMapper.deletePlatformMsgById(id);
     }
 }

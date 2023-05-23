@@ -1,6 +1,7 @@
 package com.ruoyi.project.system.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.ruoyi.project.system.controller.vo.PlatformUserVo;
 import com.ruoyi.project.system.domain.PlatformUser;
 
 import java.util.List;
@@ -61,4 +62,11 @@ public interface PlatformUserMapper extends BaseMapper<PlatformUser> {
     int deletePlatformUserByIds(Long[] userIds);
 
     PlatformUser selectPlatformUserByAccessToken(String accessToken);
+
+    /**
+     * 获取平台用户简易信息
+     *
+     * @return 简易信息
+     */
+    List<PlatformUserVo> selectPlatformUserVoList();
 }

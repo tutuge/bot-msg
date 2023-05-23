@@ -36,6 +36,11 @@
         <include refid="selectPlatformUserVo"/>
         where access_token = #{accessToken}
     </select>
+    <select id="selectPlatformUserVoList" resultType="com.ruoyi.project.system.controller.vo.PlatformUserVo">
+        select user_id,
+               user_name
+        from platform_user
+    </select>
 
 
     <insert id="insertPlatformUser" parameterType="PlatformUser"

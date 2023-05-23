@@ -11,6 +11,10 @@ import java.io.Serializable;
 @Data
 public class MsgBo implements Serializable {
     /**
+     * 消息在数据库中id
+     */
+    private Long id;
+    /**
      * 消息发送的app名
      */
     private String appName;
@@ -29,7 +33,7 @@ public class MsgBo implements Serializable {
     /**
      * 接收人名称
      */
-    private String username;
+    private String receiver;
     /**
      * 要返回的消息
      */
@@ -48,11 +52,11 @@ public class MsgBo implements Serializable {
                 Objects.equal(sender, msgBo.sender) &&
                 Objects.equal(message, msgBo.message) &&
                 Objects.equal(groupName, msgBo.groupName) &&
-                Objects.equal(username, msgBo.username);
+                Objects.equal(receiver, msgBo.receiver);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(appName, sender, message, groupName, username);
+        return Objects.hashCode(appName, sender, message, groupName, receiver);
     }
 }

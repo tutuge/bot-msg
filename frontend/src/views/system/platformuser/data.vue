@@ -2,46 +2,54 @@
   <div class="app-container">
 
     <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="用户ID" align="center" prop="userId" />
+      <el-table-column type="selection" width="55" align="center"/>
+      <el-table-column label="用户ID" align="center" prop="userId"/>
       <el-table-column label="用户名" align="center" prop="userName" :show-overflow-tooltip="true">
-          <template slot-scope="scope">
+        <template slot-scope="scope">
           <router-link :to="'/platFormUser/user/userList/' + scope.row.userId" class="link-type">
             <span>{{ scope.row.userName }}</span>
           </router-link>
         </template>
       </el-table-column>
-      <el-table-column label="邮箱" align="center" prop="email" />
-      <el-table-column label="用户昵称" align="center" prop="userNickName" />
-      <el-table-column label="用户邀请码" align="center" prop="myCode" />
-      <el-table-column label="上级ID" align="center" prop="inviteUserId" />
-      <el-table-column label="用户级别" align="center" prop="userLevel" />
-      <el-table-column label="用户类别" align="center" prop="userType" :formatter = "userTypeFormat"/>
+      <el-table-column label="邮箱" align="center" prop="email"/>
+      <el-table-column label="用户昵称" align="center" prop="userNickName"/>
+      <el-table-column label="用户邀请码" align="center" prop="myCode"/>
+      <el-table-column label="上级ID" align="center" prop="inviteUserId"/>
+      <el-table-column label="用户级别" align="center" prop="userLevel"/>
+      <el-table-column label="用户类别" align="center" prop="userType" :formatter="userTypeFormat"/>
       <el-table-column label="会员状态" align="center">
-            <template slot-scope="scope">
-              <el-switch
-                v-model="scope.row.status"
-                active-value="0"
-                inactive-value="1"
-                @change="handleStatusChange(scope.row)"
-              ></el-switch>
-            </template>
+        <template slot-scope="scope">
+          <el-switch
+              v-model="scope.row.status"
+              active-value="0"
+              inactive-value="1"
+              @change="handleStatusChange(scope.row)"
+          ></el-switch>
+        </template>
       </el-table-column>
-      
+
     </el-table>
-    
+
     <pagination
-      v-show="total>0"
-      :total="total"
-      :page.sync="queryParams.pageNum"
-      :limit.sync="queryParams.pageSize"
-      @pagination="getList"
+        v-show="total>0"
+        :total="total"
+        :page.sync="queryParams.pageNum"
+        :limit.sync="queryParams.pageSize"
+        @pagination="getList"
     />
   </div>
 </template>
 
 <script>
-import { listUser, getUser, delUser, addUser, updateUser, exportUser,changeUserStatus,listUserLow } from "@/api/system/platformuser";
+import {
+  addUser,
+  changeUserStatus,
+  delUser,
+  exportUser,
+  getUser,
+  listUserLow,
+  updateUser
+} from "@/api/system/platformuser";
 
 export default {
   name: "User",
@@ -76,13 +84,13 @@ export default {
       // 表单校验
       rules: {
         phone: [
-          { required: true, message: "手机号不能为空", trigger: "blur" }
+          {required: true, message: "手机号不能为空", trigger: "blur"}
         ],
         password: [
-          { required: true, message: "密码不能为空", trigger: "blur" }
+          {required: true, message: "密码不能为空", trigger: "blur"}
         ],
         myCode: [
-          { required: true, message: "我的邀请码不能为空", trigger: "blur" }
+          {required: true, message: "我的邀请码不能为空", trigger: "blur"}
         ],
       }
     };
@@ -106,16 +114,16 @@ export default {
     handleStatusChange(row) {
       let text = row.status === "0" ? "启用" : "停用";
       this.$confirm('确认要"' + text + '""' + row.userName + '"用户吗?', "警告", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(function() {
-          return changeUserStatus(row.userId, row.status);
-        }).then(() => {
-          this.msgSuccess(text + "成功");
-        }).catch(function() {
-          row.status = row.status === "0" ? "1" : "0";
-        });
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(function () {
+        return changeUserStatus(row.userId, row.status);
+      }).then(() => {
+        this.msgSuccess(text + "成功");
+      }).catch(function () {
+        row.status = row.status === "0" ? "1" : "0";
+      });
     },
     // 取消按钮
     cancel() {
@@ -159,7 +167,7 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.userId)
-      this.single = selection.length!=1
+      this.single = selection.length != 1
       this.multiple = !selection.length
     },
     /** 新增按钮操作 */
@@ -179,7 +187,7 @@ export default {
       });
     },
     /** 提交按钮 */
-    submitForm: function() {
+    submitForm: function () {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.userId != undefined) {
@@ -210,36 +218,38 @@ export default {
     handleDelete(row) {
       const userIds = row.userId || this.ids;
       this.$confirm('是否确认删除平台前端用户编号为"' + userIds + '"的数据项?', "警告", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(function() {
-          return delUser(userIds);
-        }).then(() => {
-          this.getList();
-          this.msgSuccess("删除成功");
-        }).catch(function() {});
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(function () {
+        return delUser(userIds);
+      }).then(() => {
+        this.getList();
+        this.msgSuccess("删除成功");
+      }).catch(function () {
+      });
     },
     /** 导出按钮操作 */
     handleExport() {
       const queryParams = this.queryParams;
       this.$confirm('是否确认导出所有平台前端用户数据项?', "警告", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(function() {
-          return exportUser(queryParams);
-        }).then(response => {
-          this.download(response.msg);
-        }).catch(function() {});
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(function () {
+        return exportUser(queryParams);
+      }).then(response => {
+        this.download(response.msg);
+      }).catch(function () {
+      });
     },
     userTypeFormat(row, column) {
-        if (row.userType == 0) {
-          return '正式用户'
-        } else if (row.userType == 1) {
-          return '试玩用户'
-        }
+      if (row.userType == 0) {
+        return '正式用户'
+      } else if (row.userType == 1) {
+        return '试玩用户'
       }
+    }
   }
 };
 </script>

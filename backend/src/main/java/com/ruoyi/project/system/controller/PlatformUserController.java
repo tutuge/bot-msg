@@ -6,6 +6,7 @@ import com.ruoyi.framework.aspectj.lang.enums.BusinessType;
 import com.ruoyi.framework.web.controller.BaseController;
 import com.ruoyi.framework.web.domain.AjaxResult;
 import com.ruoyi.framework.web.page.TableDataInfo;
+import com.ruoyi.project.system.controller.vo.PlatformUserVo;
 import com.ruoyi.project.system.domain.PlatformUser;
 import com.ruoyi.project.system.service.IPlatformUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,15 @@ public class PlatformUserController extends BaseController {
         startPage();
         List<PlatformUser> list = platformUserService.selectPlatformUserList(platformUser);
         return getDataTable(list);
+    }
+
+    /**
+     * 查询平台前端用户列表
+     */
+    @GetMapping("/listSimple")
+    public AjaxResult listSimple() {
+        List<PlatformUserVo> list = platformUserService.selectPlatformUserVoList();
+        return AjaxResult.success(list);
     }
 
     /**

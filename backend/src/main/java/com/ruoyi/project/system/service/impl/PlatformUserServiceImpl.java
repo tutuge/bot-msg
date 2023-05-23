@@ -2,6 +2,7 @@ package com.ruoyi.project.system.service.impl;
 
 import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ruoyi.project.system.controller.vo.PlatformUserVo;
 import com.ruoyi.project.system.domain.PlatformUser;
 import com.ruoyi.project.system.mapper.PlatformUserMapper;
 import com.ruoyi.project.system.service.IPlatformUserService;
@@ -96,5 +97,10 @@ public class PlatformUserServiceImpl extends ServiceImpl<PlatformUserMapper, Pla
     @Override
     public int deletePlatformUserById(Long userId) {
         return platformUserMapper.deletePlatformUserById(userId);
+    }
+
+    @Override
+    public List<PlatformUserVo> selectPlatformUserVoList() {
+        return platformUserMapper.selectPlatformUserVoList();
     }
 }

@@ -1,6 +1,7 @@
 package com.ruoyi.project.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.ruoyi.project.system.controller.vo.PlatformUserVo;
 import com.ruoyi.project.system.domain.PlatformUser;
 import com.ruoyi.project.system.domain.vo.UserAccount;
 import com.ruoyi.project.system.domain.vo.UserPwd;
@@ -70,4 +71,9 @@ public interface IPlatformUserService extends IService<PlatformUser> {
      */
     int deletePlatformUserById(Long userId);
 
+    /**
+     * 获取平台用户简易信息
+     * @return 平台用户简易信息
+     */
+    List<PlatformUserVo> selectPlatformUserVoList();
 }

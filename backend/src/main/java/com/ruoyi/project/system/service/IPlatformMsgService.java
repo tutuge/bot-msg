@@ -1,19 +1,19 @@
 package com.ruoyi.project.system.service;
 
-import java.util.List;
 import com.ruoyi.project.system.domain.PlatformMsg;
+
+import java.util.List;
 
 /**
  * 【请填写功能名称】Service接口
- * 
+ *
  * @author ruoyi
  * @date 2023-05-23
  */
-public interface IPlatformMsgService 
-{
+public interface IPlatformMsgService {
     /**
      * 查询【请填写功能名称】
-     * 
+     *
      * @param id 【请填写功能名称】ID
      * @return 【请填写功能名称】
      */
@@ -21,7 +21,7 @@ public interface IPlatformMsgService
 
     /**
      * 查询【请填写功能名称】列表
-     * 
+     *
      * @param platformMsg 【请填写功能名称】
      * @return 【请填写功能名称】集合
      */
@@ -29,7 +29,7 @@ public interface IPlatformMsgService
 
     /**
      * 新增【请填写功能名称】
-     * 
+     *
      * @param platformMsg 【请填写功能名称】
      * @return 结果
      */
@@ -37,7 +37,7 @@ public interface IPlatformMsgService
 
     /**
      * 修改【请填写功能名称】
-     * 
+     *
      * @param platformMsg 【请填写功能名称】
      * @return 结果
      */
@@ -45,7 +45,7 @@ public interface IPlatformMsgService
 
     /**
      * 批量删除【请填写功能名称】
-     * 
+     *
      * @param ids 需要删除的【请填写功能名称】ID
      * @return 结果
      */
@@ -53,7 +53,7 @@ public interface IPlatformMsgService
 
     /**
      * 删除【请填写功能名称】信息
-     * 
+     *
      * @param id 【请填写功能名称】ID
      * @return 结果
      */
