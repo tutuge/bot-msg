@@ -11,7 +11,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectPlatformMsgVo">
-        select id, message, create_time, from platform_mssage
+        select id, message, create_time, from platform_message
     </sql>
 
     <select id="selectPlatformMsgList" parameterType="PlatformMsg" resultMap="PlatformMsgResult">
@@ -35,7 +35,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
         
     <insert id="insertPlatformMessage" parameterType="PlatformMessage">
-        insert into platform_mssage
+        insert into platform_message
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null ">id,</if>
             <if test="message != null  and message != ''">message,</if>
