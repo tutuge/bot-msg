@@ -325,13 +325,25 @@ export default {
      */
     senderChange(user) {
       console.log(user)
-      this.form.sender = user.userName;
-      this.form.senderId = user.userId;
+      let list = this.platformUser;
+      for (let i = 0; i < list.length; i++) {
+        let tmp = list[i];
+        if(tmp.userId === user){
+          this.form.sender = tmp.userName;
+        }
+      }
+      // this.form.senderId = user.userId;
     },
     receiverChange(user) {
       console.log(user)
-      this.form.receiver = user.userName;
-      this.form.receiverId = user.userId;
+      let list = this.platformUser;
+      for (let i = 0; i < list.length; i++) {
+        let tmp = list[i];
+        if(tmp.userId === user){
+          this.form.receiver = tmp.userName;
+        }
+      }
+      // this.form.receiverId = user.userId;
     },
     // 表单重置
     reset() {

@@ -39,12 +39,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null ">id,</if>
             <if test="message != null  and message != ''">message,</if>
-            <if test="createTime != null  and createTime != ''">create_time,</if>
+            <if test="createTime != null">create_time,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null ">#{id},</if>
             <if test="message != null  and message != ''">#{message},</if>
-            <if test="createTime != null  and createTime != ''">#{createTime},</if>
+            <if test="createTime != null">#{createTime},</if>
          </trim>
     </insert>
 
