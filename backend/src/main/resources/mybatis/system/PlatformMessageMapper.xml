@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.mapper.PlatformMessageMapper">
+    
+    <resultMap type="PlatformMsg" id="PlatformMsgResult">
+        <result property="id"    column="id"    />
+        <result property="message"    column="message"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectPlatformMsgVo">
+        select id, message, create_time, from platform_mssage
+    </sql>
+
+    <select id="selectPlatformMsgList" parameterType="PlatformMsg" resultMap="PlatformMsgResult">
+        <include refid="selectPlatformMsgVo"/>
+        <where>  
+            <if test="appName != null  and appName != ''"> and app_name like concat('%', #{appName}, '%')</if>
+            <if test="sender != null  and sender != ''"> and sender = #{sender}</if>
+            <if test="senderId != null "> and sender_id = #{senderId}</if>
+            <if test="message != null  and message != ''"> and message = #{message}</if>
+            <if test="groupName != null  and groupName != ''"> and group_name like concat('%', #{groupName}, '%')</if>
+            <if test="receiver != null  and receiver != ''"> and receiver = #{receiver}</if>
+            <if test="receiverId != null "> and receiver_id = #{receiverId}</if>
+            <if test="msg != null  and msg != ''"> and msg = #{msg}</if>
+            <if test="pid != null "> and pid = #{pid}</if>
+        </where>
+    </select>
+    
+    <select id="selectPlatformMsgById" parameterType="Long" resultMap="PlatformMsgResult">
+        <include refid="selectPlatformMsgVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPlatformMessage" parameterType="PlatformMessage">
+        insert into platform_mssage
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null ">id,</if>
+            <if test="message != null  and message != ''">message,</if>
+            <if test="createTime != null  and createTime != ''">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null ">#{id},</if>
+            <if test="message != null  and message != ''">#{message},</if>
+            <if test="createTime != null  and createTime != ''">#{createTime},</if>
+         </trim>
+    </insert>
+
+    
+</mapper>

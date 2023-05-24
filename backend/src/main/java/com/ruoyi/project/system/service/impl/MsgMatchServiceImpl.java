@@ -2,10 +2,13 @@ package com.ruoyi.project.system.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Sets;
+import com.ruoyi.project.system.domain.PlatformMessage;
 import com.ruoyi.project.system.domain.PlatformMsg;
 import com.ruoyi.project.system.domain.bo.MsgArrBo;
 import com.ruoyi.project.system.domain.bo.MsgBo;
+import com.ruoyi.project.system.service.IPlatformMessageService;
 import com.ruoyi.project.system.service.IPlatformMsgService;
 import com.ruoyi.project.system.service.MsgMatchService;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +26,8 @@ public class MsgMatchServiceImpl implements MsgMatchService, ApplicationRunner {
 
     @Autowired
     private IPlatformMsgService platformMsgService;
+    @Autowired
+    private IPlatformMessageService platformMessageService;
 
     /**
      * 消息承接的数据结构
@@ -71,6 +76,12 @@ public class MsgMatchServiceImpl implements MsgMatchService, ApplicationRunner {
      */
     @Override
     public String reply(String app, String sender, String message, String groupName, String receiver) {
+
+        if(StrUtil.isNotBlank(message)){
+            PlatformMessage platformMessage = new PlatformMessage();
+            platformMessage.setMessage(message);
+            platformMessageService.insertPlatformMessage(platformMessage);
+        }
         MsgBo msgBo = new MsgBo();
         msgBo.setAppName(app);
         msgBo.setSender(sender);

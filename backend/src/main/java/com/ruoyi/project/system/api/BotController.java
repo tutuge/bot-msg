@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Random;
+
 /**
  * 平台前端用户Controller
  *
@@ -32,7 +34,7 @@ public class BotController extends BaseController {
                           @RequestParam("message") String message,
                           @RequestParam(name = "group_name", required = false) String groupName,
                           @RequestParam(name = "phone", required = false) String phone
-    ) {
+    ) throws InterruptedException {
         ThirdLoginUser thirdLoginUser = SecurityUtils.getThirdLoginUser();
         log.info("收到的app-->{}  sender-->{}  消息-->{}  groupName-->{}  phone-->{}  thirdLoginUser-->{}",
                 app, sender, message, groupName, phone, thirdLoginUser);
@@ -43,6 +45,10 @@ public class BotController extends BaseController {
         if (StrUtil.isNotBlank(reply)) {
             jsonObject.put("reply", reply);
         }
+        Random r = new Random();
+        double v = r.nextDouble() * 5D;
+        long v1 = (long) ((v + 5D) * 1000);
+        Thread.sleep(v1);
         return jsonObject;
     }
 }
