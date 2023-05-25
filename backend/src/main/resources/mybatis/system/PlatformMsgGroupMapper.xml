@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.mapper.PlatformMsgGroupMapper">
+    
+    <resultMap type="PlatformMsgGroup" id="PlatformMsgGroupResult">
+        <result property="msgGroupId"    column="msg_group_id"    />
+        <result property="msgGroupName"    column="msg_group_name"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectPlatformMsgGroupVo">
+        select msg_group_id, msg_group_name, create_time from platform_msg_group
+    </sql>
+
+    <select id="selectPlatformMsgGroupList" parameterType="PlatformMsgGroup" resultMap="PlatformMsgGroupResult">
+        <include refid="selectPlatformMsgGroupVo"/>
+        <where>  
+            <if test="msgGroupName != null  and msgGroupName != ''"> and msg_group_name like concat('%', #{msgGroupName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectPlatformMsgGroupById" parameterType="Long" resultMap="PlatformMsgGroupResult">
+        <include refid="selectPlatformMsgGroupVo"/>
+        where msg_group_id = #{msgGroupId}
+    </select>
+        
+    <insert id="insertPlatformMsgGroup" parameterType="PlatformMsgGroup" useGeneratedKeys="true" keyProperty="msgGroupId">
+        insert into platform_msg_group
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="msgGroupName != null  and msgGroupName != ''">msg_group_name,</if>
+            <if test="createTime != null ">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="msgGroupName != null  and msgGroupName != ''">#{msgGroupName},</if>
+            <if test="createTime != null ">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePlatformMsgGroup" parameterType="PlatformMsgGroup">
+        update platform_msg_group
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="msgGroupName != null  and msgGroupName != ''">msg_group_name = #{msgGroupName},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+        </trim>
+        where msg_group_id = #{msgGroupId}
+    </update>
+
+    <delete id="deletePlatformMsgGroupById" parameterType="Long">
+        delete from platform_msg_group where msg_group_id = #{msgGroupId}
+    </delete>
+
+    <delete id="deletePlatformMsgGroupByIds" parameterType="String">
+        delete from platform_msg_group where msg_group_id in 
+        <foreach item="msgGroupId" collection="array" open="(" separator="," close=")">
+            #{msgGroupId}
+        </foreach>
+    </delete>
+    
+</mapper>
