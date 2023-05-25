@@ -29,7 +29,7 @@ public class BotController extends BaseController {
     private MsgMatchService msgMatchService;
 
     @PostMapping("msg")
-    public JSONObject add(@RequestParam(name = "app") String app,
+    public JSONObject add(@RequestParam(name = "app", required = false) String app,
                           @RequestParam("sender") String sender,
                           @RequestParam("message") String message,
                           @RequestParam(name = "group_name", required = false) String groupName,
@@ -44,6 +44,9 @@ public class BotController extends BaseController {
         JSONObject jsonObject = new JSONObject();
         if (StrUtil.isNotBlank(reply)) {
             jsonObject.put("reply", reply);
+        } else {
+            //有消息返回的情况下再在下面阻塞线程，否则直接结束，省的占用线程
+            return jsonObject;
         }
         Random r = new Random();
         double v = r.nextDouble() * 5D;

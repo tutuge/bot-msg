@@ -6,19 +6,21 @@ import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Sets;
 import com.ruoyi.project.system.domain.PlatformMessage;
 import com.ruoyi.project.system.domain.PlatformMsg;
+import com.ruoyi.project.system.domain.PlatformMsgGroup;
+import com.ruoyi.project.system.domain.PlatformUser;
 import com.ruoyi.project.system.domain.bo.MsgArrBo;
 import com.ruoyi.project.system.domain.bo.MsgBo;
-import com.ruoyi.project.system.service.IPlatformMessageService;
-import com.ruoyi.project.system.service.IPlatformMsgService;
-import com.ruoyi.project.system.service.MsgMatchService;
+import com.ruoyi.project.system.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -28,6 +30,11 @@ public class MsgMatchServiceImpl implements MsgMatchService, ApplicationRunner {
     private IPlatformMsgService platformMsgService;
     @Autowired
     private IPlatformMessageService platformMessageService;
+    @Resource
+    private IPlatformUserService platformUserService;
+
+    @Resource
+    private IPlatformMsgGroupService platformMsgGroupService;
 
     /**
      * 消息承接的数据结构
@@ -46,15 +53,17 @@ public class MsgMatchServiceImpl implements MsgMatchService, ApplicationRunner {
         List<PlatformMsg> platformMsgs = platformMsgService.selectPlatformMsgList(platformMsg);
         Map<Integer, Set<MsgBo>> map = new HashMap<>();
         for (PlatformMsg platformMsg1 : platformMsgs) {
-            MsgBo msgBo = convert(platformMsg1);
-            int hashCode = msgBo.hashCode();
-            Set<MsgBo> msgBos = map.get(hashCode);
-            if (CollUtil.isEmpty(msgBos)) {
-                Set<MsgBo> set = new HashSet<>();
-                set.add(msgBo);
-                map.put(hashCode, set);
-            } else {
-                msgBos.add(msgBo);
+            List<MsgBo> msgBos = convert(platformMsg1);
+            for (MsgBo msgBo : msgBos) {
+                int hashCode = msgBo.hashCode();
+                Set<MsgBo> msgBos0 = map.get(hashCode);
+                if (CollUtil.isEmpty(msgBos0)) {
+                    Set<MsgBo> set = new HashSet<>();
+                    set.add(msgBo);
+                    map.put(hashCode, set);
+                } else {
+                    msgBos0.add(msgBo);
+                }
             }
         }
         Set<Integer> integers = map.keySet();
@@ -77,16 +86,14 @@ public class MsgMatchServiceImpl implements MsgMatchService, ApplicationRunner {
     @Override
     public String reply(String app, String sender, String message, String groupName, String receiver) {
 
-        if(StrUtil.isNotBlank(message)){
+        if (StrUtil.isNotBlank(message)) {
             PlatformMessage platformMessage = new PlatformMessage();
             platformMessage.setMessage(message);
             platformMessageService.insertPlatformMessage(platformMessage);
         }
         MsgBo msgBo = new MsgBo();
-        msgBo.setAppName(app);
         msgBo.setSender(sender);
         msgBo.setMessage(message);
-        msgBo.setGroupName(groupName);
         msgBo.setReceiver(receiver);
 
         MsgArrBo msgArr = getMsgArr(msgs, msgBo.hashCode());
@@ -102,66 +109,109 @@ public class MsgMatchServiceImpl implements MsgMatchService, ApplicationRunner {
         return null;
     }
 
-    private MsgBo convert(PlatformMsg platformMsg) {
-        MsgBo msgBo = new MsgBo();
-        msgBo.setId(platformMsg.getId());
-        msgBo.setMessage(platformMsg.getMessage());
-
-        msgBo.setMsg(platformMsg.getMsg());
-        return msgBo;
+    private List<MsgBo> convert(PlatformMsg platformMsg) {
+        // 1、 根据创建人id获得创建人信息
+        Long createUserId = platformMsg.getCreateUserId();
+        PlatformUser platformUser = platformUserService.selectPlatformUserById(createUserId);
+        // 2、 根据创建人信息得接收人信息和组群信息
+        String receiver = platformUser.getUserName();
+        String msgGroupIds = platformUser.getMsgGroupIds();
+        //查询消息分组
+        List<PlatformMsgGroup> platformMsgGroups = platformMsgGroupService.selectPlatformMsgGroupList(new PlatformMsgGroup());
+        Map<Long, PlatformMsgGroup> msgGroupMap = platformMsgGroups.stream().collect(Collectors.toMap(PlatformMsgGroup::getMsgGroupId, a -> a, (k1, k2) -> k1));
+        //如果用户对应多个组群，那么就是需要创建多个对象
+        List<MsgBo> msg = new ArrayList<>();
+        if (StrUtil.isNotBlank(msgGroupIds)) {
+            String[] split = msgGroupIds.split(",");
+            List<Long> msgGroupIdsLong = Arrays.stream(split).map(Long::valueOf).collect(Collectors.toList());
+            for (Long msgGroupId : msgGroupIdsLong) {
+                PlatformMsgGroup platformMsgGroup = msgGroupMap.get(msgGroupId);
+                if (ObjectUtil.isNotNull(platformMsgGroup)) {
+                    String msgGroupName = platformMsgGroup.getMsgGroupName();
+                    if (StrUtil.isNotBlank(msgGroupName)) {
+                        MsgBo msgBo = new MsgBo();
+                        msgBo.setId(platformMsg.getId());
+                        msgBo.setSender(msgGroupName);
+                        msgBo.setReceiver(receiver);
+                        msgBo.setMessage(platformMsg.getMessage());
+                        msgBo.setMsg(platformMsg.getMsg());
+                        msg.add(msgBo);
+                    }
+                }
+            }
+        }
+        return msg;
     }
 
     @Override
     public void addMsg(PlatformMsg platformMsg) {
-        MsgBo convert = convert(platformMsg);
-        int hashCode = convert.hashCode();
-        MsgArrBo msgArr = getMsgArr(msgs, hashCode);
-        if (ObjectUtil.isNotNull(msgArr)) {
-            Set<MsgBo> set = msgArr.getSet();
-            set.add(convert);
-        } else {
-            MsgArrBo bo = new MsgArrBo();
-            bo.setHash(hashCode);
-            bo.setSet(Sets.newHashSet(convert));
-            msgs.add(bo);
-            msgs.sort(Comparator.comparing(MsgArrBo::getHash));
+        List<MsgBo> msgBos = convert(platformMsg);
+        for (MsgBo convert : msgBos) {
+            int hashCode = convert.hashCode();
+            MsgArrBo msgArr = getMsgArr(msgs, hashCode);
+            if (ObjectUtil.isNotNull(msgArr)) {
+                Set<MsgBo> set = msgArr.getSet();
+                set.add(convert);
+            } else {
+                MsgArrBo bo = new MsgArrBo();
+                bo.setHash(hashCode);
+                bo.setSet(Sets.newHashSet(convert));
+                msgs.add(bo);
+            }
         }
+        msgs.sort(Comparator.comparing(MsgArrBo::getHash));
+        printMsg();
     }
 
     @Override
     public void removeMsg(PlatformMsg platformMsg) {
-        MsgBo convert = convert(platformMsg);
-        MsgArrBo msgArr = getMsgArr(msgs, convert.hashCode());
-        if (ObjectUtil.isNotNull(msgArr)) {
-            Set<MsgBo> set = msgArr.getSet();
-            set.remove(convert);
-            if (set.size() == 0) {
-                msgs.remove(msgArr);
+        List<MsgBo> msgBos = convert(platformMsg);
+        for (MsgBo convert : msgBos) {
+            MsgArrBo msgArr = getMsgArr(msgs, convert.hashCode());
+            if (ObjectUtil.isNotNull(msgArr)) {
+                Set<MsgBo> set = msgArr.getSet();
+                set.remove(convert);
+                if (set.size() == 0) {
+                    msgs.remove(msgArr);
+                }
+                log.info("remove后消息剩余-->{}", msgs.size());
+                printMsg();
             }
-            log.info("remove后消息剩余-->{}", msgs.size());
         }
+    }
+
+    private void printMsg() {
+        msgs.forEach((v) -> {
+            Set<MsgBo> set1 = v.getSet();
+            set1.forEach(z -> {
+                log.info("消息-->{}", z);
+            });
+        });
     }
 
     @Override
     public void updateMsg(PlatformMsg platformMsg) {
-        MsgBo convert = convert(platformMsg);
-        int hashCode = convert.hashCode();
-        MsgArrBo msgArr = getMsgArr(msgs, hashCode);
-        if (ObjectUtil.isNotNull(msgArr)) {
-            Set<MsgBo> set = msgArr.getSet();
-            for (MsgBo msgBo : set) {
-                if (msgBo.getId().equals(convert.getId())) {
-                    set.remove(msgBo);
-                    set.add(convert);
+        List<MsgBo> msgBos = convert(platformMsg);
+        for (MsgBo convert : msgBos) {
+            int hashCode = convert.hashCode();
+            MsgArrBo msgArr = getMsgArr(msgs, hashCode);
+            if (ObjectUtil.isNotNull(msgArr)) {
+                Set<MsgBo> set = msgArr.getSet();
+                for (MsgBo msgBo : set) {
+                    if (msgBo.getId().equals(convert.getId())) {
+                        set.remove(msgBo);
+                        set.add(convert);
+                    }
                 }
+            } else {
+                MsgArrBo bo = new MsgArrBo();
+                bo.setHash(hashCode);
+                bo.setSet(Sets.newHashSet(convert));
+                msgs.add(bo);
             }
-        } else {
-            MsgArrBo bo = new MsgArrBo();
-            bo.setHash(hashCode);
-            bo.setSet(Sets.newHashSet(convert));
-            msgs.add(bo);
-            msgs.sort(Comparator.comparing(MsgArrBo::getHash));
         }
+        msgs.sort(Comparator.comparing(MsgArrBo::getHash));
+        printMsg();
     }
 
     /**

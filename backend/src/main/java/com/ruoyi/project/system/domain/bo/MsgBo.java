@@ -2,22 +2,22 @@ package com.ruoyi.project.system.domain.bo;
 
 import com.google.common.base.Objects;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.StringJoiner;
 
 /**
  * 消息发送的bo
  */
-@Data
+@Getter
+@Setter
 public class MsgBo implements Serializable {
     /**
      * 消息在数据库中id
      */
     private Long id;
-    /**
-     * 消息发送的app名
-     */
-    private String appName;
     /**
      * 发送人
      */
@@ -27,10 +27,6 @@ public class MsgBo implements Serializable {
      */
     private String message;
     /**
-     * 组群名
-     */
-    private String groupName;
-    /**
      * 接收人名称
      */
     private String receiver;
@@ -39,6 +35,12 @@ public class MsgBo implements Serializable {
      */
     private String msg;
 
+    /**
+     * 此处使用发送人 接收人 还有消息内容来确定本对象是否包含返回的消息
+     *
+     * @param o
+     * @return
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -48,15 +50,25 @@ public class MsgBo implements Serializable {
             return false;
         }
         MsgBo msgBo = (MsgBo) o;
-        return Objects.equal(appName, msgBo.appName) &&
-                Objects.equal(sender, msgBo.sender) &&
+        return Objects.equal(sender, msgBo.sender) &&
                 Objects.equal(message, msgBo.message) &&
-                Objects.equal(groupName, msgBo.groupName) &&
                 Objects.equal(receiver, msgBo.receiver);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(appName, sender, message, groupName, receiver);
+        return Objects.hashCode(sender, message, receiver);
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", MsgBo.class.getSimpleName() + "[", "]")
+                .add("id=" + id)
+                .add("sender='" + sender + "'")
+                .add("message='" + message + "'")
+                .add("receiver='" + receiver + "'")
+                .add("msg='" + msg + "'")
+                .add("hashcode='" + hashCode() + "'")
+                .toString();
     }
 }
