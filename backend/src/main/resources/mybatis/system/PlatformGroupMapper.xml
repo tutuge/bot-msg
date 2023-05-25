@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.mapper.PlatformGroupMapper">
+    
+    <resultMap type="PlatformGroup" id="PlatformGroupResult">
+        <result property="groupId"    column="group_id"    />
+        <result property="groupName"    column="group_name"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectPlatformGroupVo">
+        select group_id, group_name, create_time from platform_group
+    </sql>
+
+    <select id="selectPlatformGroupList" parameterType="PlatformGroup" resultMap="PlatformGroupResult">
+        <include refid="selectPlatformGroupVo"/>
+        <where>  
+            <if test="groupName != null  and groupName != ''"> and group_name like concat('%', #{groupName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectPlatformGroupById" parameterType="Long" resultMap="PlatformGroupResult">
+        <include refid="selectPlatformGroupVo"/>
+        where group_id = #{groupId}
+    </select>
+        
+    <insert id="insertPlatformGroup" parameterType="PlatformGroup" useGeneratedKeys="true" keyProperty="groupId">
+        insert into platform_group
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="groupName != null  and groupName != ''">group_name,</if>
+            <if test="createTime != null ">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="groupName != null  and groupName != ''">#{groupName},</if>
+            <if test="createTime != null ">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePlatformGroup" parameterType="PlatformGroup">
+        update platform_group
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="groupName != null  and groupName != ''">group_name = #{groupName},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+        </trim>
+        where group_id = #{groupId}
+    </update>
+
+    <delete id="deletePlatformGroupById" parameterType="Long">
+        delete from platform_group where group_id = #{groupId}
+    </delete>
+
+    <delete id="deletePlatformGroupByIds" parameterType="String">
+        delete from platform_group where group_id in 
+        <foreach item="groupId" collection="array" open="(" separator="," close=")">
+            #{groupId}
+        </foreach>
+    </delete>
+    
+</mapper>
