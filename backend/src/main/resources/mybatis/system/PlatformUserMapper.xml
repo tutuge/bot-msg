@@ -16,6 +16,13 @@
                user_name
         from platform_user
     </select>
+    <select id="selectByMsgGroupId" resultType="com.ruoyi.project.system.domain.PlatformUser">
+        select *
+        from platform_user
+        where msg_group_ids like concat('%,', #{msgGroupId}, ',%')
+           or msg_group_ids like concat(#{msgGroupId}, ',%')
+           or msg_group_ids like concat('%,', #{msgGroupId})
+    </select>
 
     <delete id="deletePlatformUserById" parameterType="Long">
         delete

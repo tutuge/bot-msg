@@ -1,12 +1,15 @@
 package com.ruoyi.project.system.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.project.system.domain.PlatformMsgGroup;
+import com.ruoyi.project.system.domain.PlatformUser;
 import com.ruoyi.project.system.mapper.PlatformMsgGroupMapper;
 import com.ruoyi.project.system.service.IPlatformMsgGroupService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.ruoyi.project.system.service.IPlatformUserService;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -17,8 +20,10 @@ import java.util.List;
  */
 @Service
 public class PlatformMsgGroupServiceImpl implements IPlatformMsgGroupService {
-    @Autowired
+    @Resource
     private PlatformMsgGroupMapper platformMsgGroupMapper;
+    @Resource
+    private IPlatformUserService platformUserService;
 
     /**
      * 查询消息组群
@@ -73,6 +78,12 @@ public class PlatformMsgGroupServiceImpl implements IPlatformMsgGroupService {
      */
     @Override
     public int deletePlatformMsgGroupByIds(Long[] msgGroupIds) {
+        for (Long id : msgGroupIds) {
+            List<PlatformUser> list = platformUserService.selectByMsgGroupId(id);
+            if (CollUtil.isNotEmpty(list)) {
+                throw new RuntimeException("当前消息分组仍然被使用中，无法删除");
+            }
+        }
         return platformMsgGroupMapper.deletePlatformMsgGroupByIds(msgGroupIds);
     }
 
@@ -84,6 +95,10 @@ public class PlatformMsgGroupServiceImpl implements IPlatformMsgGroupService {
      */
     @Override
     public int deletePlatformMsgGroupById(Long msgGroupId) {
+        List<PlatformUser> list = platformUserService.selectByMsgGroupId(msgGroupId);
+        if (CollUtil.isNotEmpty(list)) {
+            throw new RuntimeException("当前消息分组仍然被使用中，无法删除");
+        }
         return platformMsgGroupMapper.deletePlatformMsgGroupById(msgGroupId);
     }
 }

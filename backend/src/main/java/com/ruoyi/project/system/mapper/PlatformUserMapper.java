@@ -3,6 +3,7 @@ package com.ruoyi.project.system.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ruoyi.project.system.controller.vo.PlatformUserVo;
 import com.ruoyi.project.system.domain.PlatformUser;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -35,4 +36,11 @@ public interface PlatformUserMapper extends BaseMapper<PlatformUser> {
      * @return 简易信息
      */
     List<PlatformUserVo> selectPlatformUserVoList();
+
+
+    /**
+     * @param msgGroupId 消息分组id
+     * @return 根据消息分组id差出来的用户
+     */
+    List<PlatformUser> selectByMsgGroupId(@Param("msgGroupId") Long msgGroupId);
 }

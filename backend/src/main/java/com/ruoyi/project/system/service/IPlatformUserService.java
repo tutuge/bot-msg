@@ -3,8 +3,6 @@ package com.ruoyi.project.system.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ruoyi.project.system.controller.vo.PlatformUserVo;
 import com.ruoyi.project.system.domain.PlatformUser;
-import com.ruoyi.project.system.domain.vo.UserAccount;
-import com.ruoyi.project.system.domain.vo.UserPwd;
 
 import java.util.List;
 
@@ -73,7 +71,14 @@ public interface IPlatformUserService extends IService<PlatformUser> {
 
     /**
      * 获取平台用户简易信息
+     *
      * @return 平台用户简易信息
      */
     List<PlatformUserVo> selectPlatformUserVoList();
+
+    /**
+     * @param msgGroupId 消息分组id
+     * @return 根据消息分组id差出来的用户
+     */
+    List<PlatformUser> selectByMsgGroupId(Long msgGroupId);
 }

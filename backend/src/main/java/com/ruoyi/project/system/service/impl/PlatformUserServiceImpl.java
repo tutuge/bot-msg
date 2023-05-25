@@ -171,4 +171,9 @@ public class PlatformUserServiceImpl extends ServiceImpl<PlatformUserMapper, Pla
     public List<PlatformUserVo> selectPlatformUserVoList() {
         return platformUserMapper.selectPlatformUserVoList();
     }
+
+    @Override
+    public List<PlatformUser> selectByMsgGroupId(Long msgGroupId) {
+        return platformUserMapper.selectByMsgGroupId(msgGroupId);
+    }
 }

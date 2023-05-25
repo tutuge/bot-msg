@@ -1,6 +1,7 @@
 package com.ruoyi.project.system.service;
 
 import com.ruoyi.project.system.domain.PlatformMsgGroup;
+import com.ruoyi.project.system.domain.PlatformUser;
 
 import java.util.List;
 
@@ -58,4 +59,5 @@ public interface IPlatformMsgGroupService {
      * @return 结果
      */
     int deletePlatformMsgGroupById(Long msgGroupId);
+
 }
