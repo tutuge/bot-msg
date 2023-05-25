@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 // 查询消息组群列表
-export function listGroup(query) {
+export function listMsgGroup(query) {
   return request({
     url: '/system/msggroup/list',
     method: 'get',
@@ -9,8 +9,15 @@ export function listGroup(query) {
   })
 }
 
+export function allMsgGroup() {
+  return request({
+    url: '/system/msggroup/all/info',
+    method: 'get'
+  })
+}
+
 // 查询消息组群详细
-export function getGroup(msgGroupId) {
+export function getMsgGroup(msgGroupId) {
   return request({
     url: '/system/msggroup/' + msgGroupId,
     method: 'get'
@@ -18,7 +25,7 @@ export function getGroup(msgGroupId) {
 }
 
 // 新增消息组群
-export function addGroup(data) {
+export function addMsgGroup(data) {
   return request({
     url: '/system/msggroup',
     method: 'post',
@@ -27,7 +34,7 @@ export function addGroup(data) {
 }
 
 // 修改消息组群
-export function updateGroup(data) {
+export function updateMsgGroup(data) {
   return request({
     url: '/system/msggroup',
     method: 'put',
@@ -36,7 +43,7 @@ export function updateGroup(data) {
 }
 
 // 删除消息组群
-export function delGroup(msgGroupId) {
+export function delMsgGroup(msgGroupId) {
   return request({
     url: '/system/msggroup/' + msgGroupId,
     method: 'delete'
@@ -44,7 +51,7 @@ export function delGroup(msgGroupId) {
 }
 
 // 导出消息组群
-export function exportGroup(query) {
+export function exportMsgGroup(query) {
   return request({
     url: '/system/msggroup/export',
     method: 'get',

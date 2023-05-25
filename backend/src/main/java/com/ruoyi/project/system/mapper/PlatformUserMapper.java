@@ -13,37 +13,6 @@ import java.util.List;
  * @date 2020-04-06
  */
 public interface PlatformUserMapper extends BaseMapper<PlatformUser> {
-    /**
-     * 查询平台前端用户
-     *
-     * @param userId 平台前端用户ID
-     * @return 平台前端用户
-     */
-    PlatformUser selectPlatformUserById(Long userId);
-
-    /**
-     * 查询平台前端用户列表
-     *
-     * @param platformUser 平台前端用户
-     * @return 平台前端用户集合
-     */
-    List<PlatformUser> selectPlatformUserList(PlatformUser platformUser);
-
-    /**
-     * 新增平台前端用户
-     *
-     * @param platformUser 平台前端用户
-     * @return 结果
-     */
-    int insertPlatformUser(PlatformUser platformUser);
-
-    /**
-     * 修改平台前端用户
-     *
-     * @param platformUser 平台前端用户
-     * @return 结果
-     */
-    int updatePlatformUser(PlatformUser platformUser);
 
     /**
      * 删除平台前端用户
@@ -60,9 +29,6 @@ public interface PlatformUserMapper extends BaseMapper<PlatformUser> {
      * @return 结果
      */
     int deletePlatformUserByIds(Long[] userIds);
-
-    PlatformUser selectPlatformUserByAccessToken(String accessToken);
-
     /**
      * 获取平台用户简易信息
      *

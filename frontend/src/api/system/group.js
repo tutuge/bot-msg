@@ -9,6 +9,15 @@ export function listGroup(query) {
   })
 }
 
+
+// 查询平台前端用户列表
+export function allGroup() {
+  return request({
+    url: '/system/group/all/info',
+    method: 'get'
+  })
+}
+
 // 查询平台前端用户详细
 export function getGroup(groupId) {
   return request({

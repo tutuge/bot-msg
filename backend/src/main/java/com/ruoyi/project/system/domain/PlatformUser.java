@@ -32,4 +32,12 @@ public class PlatformUser extends BaseEntity {
      * 请求的token
      */
     private String accessToken;
+    /**
+     * 用户分组id
+     */
+    private Long userGroupId;
+    /**
+     * 消息分组ids
+     */
+    private String msgGroupIds;
 }

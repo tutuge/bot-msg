@@ -38,6 +38,16 @@ public class PlatformMsgGroupController extends BaseController {
     }
 
     /**
+     * 查询消息组群列表
+     */
+    @PreAuthorize("@ss.hasPermi('system:msggroup:list')")
+    @GetMapping("/all/info")
+    public AjaxResult all() {
+        List<PlatformMsgGroup> list = platformMsgGroupService.selectPlatformMsgGroupList(new PlatformMsgGroup());
+        return AjaxResult.success(list);
+    }
+
+    /**
      * 导出消息组群列表
      */
     @PreAuthorize("@ss.hasPermi('system:msggroup:export')")

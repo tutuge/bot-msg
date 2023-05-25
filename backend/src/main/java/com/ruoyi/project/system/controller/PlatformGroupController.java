@@ -37,6 +37,13 @@ public class PlatformGroupController extends BaseController {
         return getDataTable(list);
     }
 
+    @PreAuthorize("@ss.hasPermi('system:group:list')")
+    @GetMapping("/all/info")
+    public AjaxResult all() {
+        List<PlatformGroup> list = platformGroupService.selectPlatformGroupList(new PlatformGroup());
+        return AjaxResult.success(list);
+    }
+
     /**
      * 导出平台前端用户列表
      */

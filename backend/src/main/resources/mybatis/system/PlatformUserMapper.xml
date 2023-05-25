@@ -11,59 +11,11 @@
 
     </resultMap>
 
-    <sql id="selectPlatformUserVo">
-        select user_id,
-               user_name,
-               access_token
-        from platform_user
-    </sql>
-
-
-    <select id="selectPlatformUserList" parameterType="PlatformUser"
-            resultMap="PlatformUserResult">
-        <include refid="selectPlatformUserVo"/>
-        <where>
-            <if test="userId != null ">and user_id = #{userId}</if>
-        </where>
-    </select>
-
-    <select id="selectPlatformUserById" parameterType="Long"
-            resultMap="PlatformUserResult">
-        <include refid="selectPlatformUserVo"/>
-        where user_id = #{userId}
-    </select>
-    <select id="selectPlatformUserByAccessToken" resultType="com.ruoyi.project.system.domain.PlatformUser">
-        <include refid="selectPlatformUserVo"/>
-        where access_token = #{accessToken}
-    </select>
     <select id="selectPlatformUserVoList" resultType="com.ruoyi.project.system.controller.vo.PlatformUserVo">
         select user_id,
                user_name
         from platform_user
     </select>
-
-
-    <insert id="insertPlatformUser" parameterType="PlatformUser"
-            useGeneratedKeys="true" keyProperty="userId">
-        insert into platform_user
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="accessToken != null  and accessToken != ''">access_token,</if>
-            <if test="userName != null  and userName != ''">user_name</if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="accessToken != null  and accessToken != ''">#{accessToken},</if>
-            <if test="userName != null  and userName != ''">#{userName},</if>
-        </trim>
-    </insert>
-
-    <update id="updatePlatformUser" parameterType="PlatformUser">
-        update platform_user
-        <trim prefix="SET" suffixOverrides=",">
-            <if test="accessToken != null  and accessToken != ''">access_token = #{accessToken},</if>
-            <if test="userName != null  and userName != ''">user_name = #{userName},</if>
-        </trim>
-        where user_id = #{userId}
-    </update>
 
     <delete id="deletePlatformUserById" parameterType="Long">
         delete

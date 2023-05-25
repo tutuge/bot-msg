@@ -59,9 +59,11 @@
 
     <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center"/>
-      <el-table-column label="用户ID" align="center" prop="userId" width="80"/>
+      <el-table-column label="ID" align="center" prop="userId" width="80"/>
       <el-table-column label="用户名" align="center" prop="userName"/>
+      <el-table-column label="用户组" align="center" prop="userGroupName"/>
       <el-table-column label="token" align="center" prop="accessToken"/>
+      <el-table-column label="回复指定组群" align="center" prop="msgGroupName"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -84,14 +86,32 @@
     />
 
     <!-- 添加或修改平台前端用户对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="700px">
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+    <el-dialog :title="title" :visible.sync="open" width="500px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="120px">
         <el-form-item label="用户名" prop="userName">
           <el-input v-model="form.userName" placeholder="请输入用户名"/>
         </el-form-item>
-<!--        <el-form-item label="token" prop="accessToken">-->
-<!--          <el-input v-model="form.accessToken" placeholder="请输入请求使用的token"/>-->
-<!--        </el-form-item>-->
+        <el-form-item label="用户组" prop="userGroupId">
+          <el-select v-model="form.userGroupId" placeholder="请选择用户组" clearable size="small">
+            <el-option
+                v-for="dict in userGroup"
+                :key="dict.groupId"
+                :label="dict.groupName"
+                :value="dict.groupId"
+            />
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="回复指定组群" prop="userGroupId">
+          <el-select v-model="form.msgGroupIds" multiple placeholder="请选择用户组" clearable size="small">
+            <el-option
+                v-for="dict in userMsgGroup"
+                :key="dict.msgGroupId"
+                :label="dict.msgGroupName"
+                :value="dict.msgGroupId"
+            />
+          </el-select>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -104,6 +124,8 @@
 
 <script>
 import {addUser, delUser, getUser, listUser, updateUser} from "@/api/system/platformuser";
+import {allGroup} from "@/api/system/group";
+import {allMsgGroup} from "@/api/system/msgGroup";
 
 export default {
   name: "User",
@@ -121,6 +143,8 @@ export default {
       total: 0,
       // 平台前端用户表格数据
       userList: [],
+      userGroup: [], // 所有用户分组的信息
+      userMsgGroup: [], //所有消息组群
       //用户级别数据
       userLevelOptions: [],
       // 弹出层标题
@@ -153,6 +177,22 @@ export default {
     this.getList();
   },
   methods: {
+    /**
+     * 获取所有用户分组的信息
+     */
+    getAllGroup() {
+      allGroup().then(res => {
+        this.userGroup = res.data;
+      })
+    },
+    /**
+     * 获取所有消息组群
+     */
+    getAllMsgGroup() {
+      allMsgGroup().then(res => {
+        this.userMsgGroup = res.data;
+      })
+    },
     /** 查询平台前端用户列表 */
     getList() {
       this.loading = true;
@@ -174,6 +214,10 @@ export default {
         userId: undefined,
         userName: undefined,
         accessToken: undefined,
+        userGroupId: undefined,
+        userGroupName: undefined,
+        msgGroupIds: undefined,
+        msgGroupName: undefined,
       };
       this.resetForm("form");
     },
@@ -196,6 +240,7 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
+      Promise.all([this.getAllGroup(),this.getAllMsgGroup()]);
       this.open = true;
       this.title = "添加平台用户";
     },
@@ -203,17 +248,24 @@ export default {
     handleUpdate(row) {
       this.reset();
       const userId = row.userId || this.ids
+      Promise.all([this.getAllGroup(),this.getAllMsgGroup(),this.getUserInfo(row.userId)])
+      this.open = true;
+      this.title = "修改平台前端用户";
+    },
+    /**
+     * 获取用户信息
+     */
+    getUserInfo(userId){
       getUser(userId).then(response => {
         this.form = response.data;
       });
-      this.open = true;
-      this.title = "修改平台前端用户";
     },
 
     /** 提交按钮 */
     submitForm: function () {
       this.$refs["form"].validate(valid => {
         if (valid) {
+          this.form.msgGroupIds = this.form.msgGroupIds.join(",")
           if (this.form.userId !== undefined) {
             updateUser(this.form).then(response => {
               if (response.code === 200) {

@@ -33,7 +33,7 @@ public class PlatformUserController extends BaseController {
     @GetMapping("/list")
     public TableDataInfo list(PlatformUser platformUser) {
         startPage();
-        List<PlatformUser> list = platformUserService.selectPlatformUserList(platformUser);
+        List<PlatformUserVo> list = platformUserService.selectPlatformUserList(platformUser);
         return getDataTable(list);
     }
 
@@ -46,16 +46,6 @@ public class PlatformUserController extends BaseController {
         return AjaxResult.success(list);
     }
 
-    /**
-     * 导出平台前端用户列表
-     */
-    @Log(title = "平台前端用户", businessType = BusinessType.EXPORT)
-    @GetMapping("/export")
-    public AjaxResult export(PlatformUser platformUser) {
-        List<PlatformUser> list = platformUserService.selectPlatformUserList(platformUser);
-        ExcelUtil<PlatformUser> util = new ExcelUtil<PlatformUser>(PlatformUser.class);
-        return util.exportExcel(list, "user");
-    }
 
     /**
      * 获取平台前端用户详细信息

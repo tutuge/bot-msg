@@ -111,7 +111,7 @@
 </template>
 
 <script>
-import {addGroup, delGroup, exportGroup, getGroup, listGroup, updateGroup} from "@/api/system/msgGroup";
+import {addMsgGroup, delMsgGroup, exportMsgGroup, getMsgGroup, listMsgGroup, updateMsgGroup} from "@/api/system/msgGroup";
 
 export default {
   name: "MsgGroup",
@@ -156,7 +156,7 @@ export default {
     /** 查询消息组群列表 */
     getList() {
       this.loading = true;
-      listGroup(this.queryParams).then(response => {
+      listMsgGroup(this.queryParams).then(response => {
         this.groupList = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -202,7 +202,7 @@ export default {
     handleUpdate(row) {
       this.reset();
       const msgGroupId = row.msgGroupId || this.ids
-      getGroup(msgGroupId).then(response => {
+      getMsgGroup(msgGroupId).then(response => {
         this.form = response.data;
         this.open = true;
         this.title = "修改消息组群";
@@ -213,7 +213,7 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.msgGroupId != undefined) {
-            updateGroup(this.form).then(response => {
+            updateMsgGroup(this.form).then(response => {
               if (response.code === 200) {
                 this.msgSuccess("修改成功");
                 this.open = false;
@@ -223,7 +223,7 @@ export default {
               }
             });
           } else {
-            addGroup(this.form).then(response => {
+            addMsgGroup(this.form).then(response => {
               if (response.code === 200) {
                 this.msgSuccess("新增成功");
                 this.open = false;
@@ -244,7 +244,7 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       }).then(function () {
-        return delGroup(msgGroupIds);
+        return delMsgGroup(msgGroupIds);
       }).then(() => {
         this.getList();
         this.msgSuccess("删除成功");
@@ -259,7 +259,7 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       }).then(function () {
-        return exportGroup(queryParams);
+        return exportMsgGroup(queryParams);
       }).then(response => {
         this.download(response.msg);
       }).catch(function () {

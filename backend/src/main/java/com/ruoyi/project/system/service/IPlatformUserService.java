@@ -37,7 +37,7 @@ public interface IPlatformUserService extends IService<PlatformUser> {
      * @param platformUser 平台前端用户
      * @return 平台前端用户集合
      */
-    List<PlatformUser> selectPlatformUserList(PlatformUser platformUser);
+    List<PlatformUserVo> selectPlatformUserList(PlatformUser platformUser);
 
     /**
      * 新增平台前端用户
