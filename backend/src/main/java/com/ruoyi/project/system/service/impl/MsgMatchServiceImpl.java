@@ -105,11 +105,8 @@ public class MsgMatchServiceImpl implements MsgMatchService, ApplicationRunner {
     private MsgBo convert(PlatformMsg platformMsg) {
         MsgBo msgBo = new MsgBo();
         msgBo.setId(platformMsg.getId());
-        msgBo.setAppName(platformMsg.getAppName());
-        msgBo.setSender(platformMsg.getSender());
         msgBo.setMessage(platformMsg.getMessage());
-        msgBo.setGroupName(platformMsg.getGroupName());
-        msgBo.setReceiver(platformMsg.getReceiver());
+
         msgBo.setMsg(platformMsg.getMsg());
         return msgBo;
     }

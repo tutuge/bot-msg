@@ -1,64 +1,10 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="68px">
-      <el-form-item label="app名称" prop="appName">
-        <el-input
-            v-model="queryParams.appName"
-            placeholder="请输入app名称"
-            clearable
-            size="small"
-            @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="发送人" prop="sender">
-        <el-input
-            v-model="queryParams.sender"
-            placeholder="请输入发送人"
-            clearable
-            size="small"
-            @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="发送人id" prop="senderId">
-        <el-input
-            v-model="queryParams.senderId"
-            placeholder="请输入发送人id"
-            clearable
-            size="small"
-            @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
       <el-form-item label="发送过来的消息体" prop="message">
         <el-input
             v-model="queryParams.message"
             placeholder="请输入发送过来的消息体"
-            clearable
-            size="small"
-            @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="组群名" prop="groupName">
-        <el-input
-            v-model="queryParams.groupName"
-            placeholder="请输入组群名"
-            clearable
-            size="small"
-            @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="接收人" prop="receiver">
-        <el-input
-            v-model="queryParams.receiver"
-            placeholder="请输入接收人"
-            clearable
-            size="small"
-            @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="接送人id" prop="receiverId">
-        <el-input
-            v-model="queryParams.receiverId"
-            placeholder="请输入接送人id"
             clearable
             size="small"
             @keyup.enter.native="handleQuery"
@@ -73,15 +19,6 @@
             @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <!--      <el-form-item label="相关的上一条消息id，没有上一条就是1" prop="pid">-->
-      <!--        <el-input-->
-      <!--          v-model="queryParams.pid"-->
-      <!--          placeholder="请输入相关的上一条消息id，没有上一条就是1"-->
-      <!--          clearable-->
-      <!--          size="small"-->
-      <!--          @keyup.enter.native="handleQuery"-->
-      <!--        />-->
-      <!--      </el-form-item>-->
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -136,15 +73,8 @@
     <el-table v-loading="loading" :data="msgList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center"/>
       <el-table-column label="id" align="center" prop="id"/>
-      <el-table-column label="app名称" align="center" prop="appName"/>
-      <el-table-column label="发送人" align="center" prop="sender"/>
-      <!--      <el-table-column label="发送人id" align="center" prop="senderId" />-->
-      <el-table-column label="发送过来的消息体" align="center" prop="message"/>
-      <el-table-column label="组群名" align="center" prop="groupName"/>
-      <el-table-column label="接收人" align="center" prop="receiver"/>
-      <!--      <el-table-column label="接送人id" align="center" prop="receiverId" />-->
-      <el-table-column label="要回复的消息" align="center" prop="msg"/>
-      <!--      <el-table-column label="上一条消息id，没有上一条就是1" align="center" prop="pid" />-->
+      <el-table-column label="匹配" align="center" prop="message"/>
+      <el-table-column label="回复" align="center" prop="msg"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -178,42 +108,14 @@
     <!-- 添加或修改【平台消息】对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="600px">
       <el-form ref="form" :model="form" :rules="rules" label-width="130px">
-        <el-form-item label="app名称" prop="appName">
-          <el-input v-model="form.appName" placeholder="请输入app名称"/>
-        </el-form-item>
-        <el-form-item label="发送人" prop="sender">
-          <el-select v-model="form.senderId" placeholder="请选择发送人" @change="senderChange" clearable size="small">
-            <el-option
-                v-for="user in platformUser"
-                :key="user.userId"
-                :label="user.userName"
-                :value="user.userId"
-            />
-          </el-select>
-        </el-form-item>
+
         <el-form-item label="接收的消息" prop="message">
           <el-input v-model="form.message" placeholder="接收的消息"/>
-        </el-form-item>
-        <el-form-item label="组群名" prop="groupName">
-          <el-input v-model="form.groupName" placeholder="请输入组群名"/>
-        </el-form-item>
-        <el-form-item label="接收人" prop="receiver">
-          <el-select v-model="form.receiverId" placeholder="请选择接收人" @change="receiverChange" clearable size="small">
-            <el-option
-                v-for="user in platformUser"
-                :key="user.userId"
-                :label="user.userName"
-                :value="user.userId"
-            />
-          </el-select>
         </el-form-item>
 
         <el-form-item label="回复的消息" prop="msg">
           <el-input v-model="form.msg" placeholder="请输入回复的消息"/>
         </el-form-item>
-<!--        <el-form-item label="相关的上一条消息id，没有上一条就是1" prop="pid">-->
-<!--          <el-input v-model="form.pid" placeholder="请输入相关的上一条消息id，没有上一条就是1"/>-->
-<!--        </el-form-item>-->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -225,7 +127,6 @@
 
 <script>
 import {addMsg, delMsg, exportMsg, getMsg, listMsg, updateMsg} from "@/api/system/msg";
-import {listSimpleUser} from "@/api/system/platformuser";
 
 export default {
   name: "Msg",
@@ -248,64 +149,37 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
+      createUserId: undefined,
       // 查询参数
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        appName: undefined,
-        sender: undefined,
-        senderId: undefined,
         message: undefined,
-        groupName: undefined,
-        receiver: undefined,
-        receiverId: undefined,
+        createUserId: undefined,
         msg: undefined,
-        pid: undefined
       },
       // 表单参数
       form: {},
       // 表单校验
       rules: {
-        appName: [
-          {required: true, message: "app名称不能为空", trigger: "blur"}
-        ],
-        sender: [
-          {required: true, message: "发送人不能为空", trigger: "blur"}
-        ],
-        senderId: [
-          {required: true, message: "发送人id不能为空", trigger: "blur"}
-        ],
         message: [
           {required: true, message: "发接收的消息不能为空", trigger: "blur"}
-        ],
-        receiver: [
-          {required: true, message: "接收人不能为空", trigger: "blur"}
-        ],
-        receiverId: [
-          {required: true, message: "接送人id不能为空", trigger: "blur"}
         ],
         msg: [
           {required: true, message: "回复的消息不能为空", trigger: "blur"}
         ],
-        // pid: [
-        //   {required: true, message: "相关的上一条消息id，没有上一条就是1不能为空", trigger: "blur"}
-        // ]
       }
     };
   },
-  created() {
-    this.init();
+  mounted() {
+    const {userId} = this.$route.query;
+    if (userId) {
+      this.queryParams.createUserId = userId
+      this.createUserId = userId
+      this.getList();
+    }
   },
   methods: {
-
-    init() {
-      Promise.all([this.getPlatformUserSimple(), this.getList()]);
-    },
-    getPlatformUserSimple() {
-      listSimpleUser().then(res => {
-        this.platformUser = res.data;
-      })
-    },
     /** 查询【平台消息】列表 */
     getList() {
       this.loading = true;
@@ -320,44 +194,12 @@ export default {
       this.open = false;
       this.reset();
     },
-    /**
-     * 发送人选择
-     */
-    senderChange(user) {
-      console.log(user)
-      let list = this.platformUser;
-      for (let i = 0; i < list.length; i++) {
-        let tmp = list[i];
-        if(tmp.userId === user){
-          this.form.sender = tmp.userName;
-        }
-      }
-      // this.form.senderId = user.userId;
-    },
-    receiverChange(user) {
-      console.log(user)
-      let list = this.platformUser;
-      for (let i = 0; i < list.length; i++) {
-        let tmp = list[i];
-        if(tmp.userId === user){
-          this.form.receiver = tmp.userName;
-        }
-      }
-      // this.form.receiverId = user.userId;
-    },
     // 表单重置
     reset() {
       this.form = {
         id: undefined,
-        appName: undefined,
-        sender: undefined,
-        senderId: undefined,
         message: undefined,
-        groupName: undefined,
-        receiver: undefined,
-        receiverId: undefined,
         msg: undefined,
-        pid: undefined
       };
       this.resetForm("form");
     },
@@ -397,6 +239,7 @@ export default {
     submitForm: function () {
       this.$refs["form"].validate(valid => {
         if (valid) {
+          this.form.createUserId = this.createUserId;
           if (this.form.id != undefined) {
             updateMsg(this.form).then(response => {
               if (response.code === 200) {

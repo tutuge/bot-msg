@@ -71,7 +71,14 @@
               type="text"
               icon="el-icon-edit"
               @click="handleUpdate(scope.row)"
-          >修改信息
+          >修改
+          </el-button>
+          <el-button
+              size="mini"
+              type="text"
+              icon="el-icon-edit"
+              @click="handleMessage(scope.row)"
+          >信息
           </el-button>
         </template>
       </el-table-column>
@@ -240,7 +247,7 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
-      Promise.all([this.getAllGroup(),this.getAllMsgGroup()]);
+      Promise.all([this.getAllGroup(), this.getAllMsgGroup()]);
       this.open = true;
       this.title = "添加平台用户";
     },
@@ -248,14 +255,21 @@ export default {
     handleUpdate(row) {
       this.reset();
       const userId = row.userId || this.ids
-      Promise.all([this.getAllGroup(),this.getAllMsgGroup(),this.getUserInfo(row.userId)])
+      Promise.all([this.getAllGroup(), this.getAllMsgGroup(), this.getUserInfo(row.userId)])
       this.open = true;
       this.title = "修改平台前端用户";
     },
     /**
+     * 消息跳转
+     * @param row
+     */
+    handleMessage(row) {
+      this.$router.push({path: "/system/msgEdit", query: {userId: row.userId}});
+    },
+    /**
      * 获取用户信息
      */
-    getUserInfo(userId){
+    getUserInfo(userId) {
       getUser(userId).then(response => {
         this.form = response.data;
       });

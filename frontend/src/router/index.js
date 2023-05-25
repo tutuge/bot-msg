@@ -97,14 +97,13 @@ export const constantRoutes = [
     path: '/system',
     component: Layout,
     hidden: true,
-    redirect: 'noredirect',
     children: [
-      // {
-      //   path: 'networktx',
-      //   component: () => import('@/views/system/networktx/index'),
-      //   name: 'NetworkTx',
-      //   meta: { title: '提现网络', icon: 'user' }
-      // }
+      {
+        path: 'msgEdit',
+        component: () => import('@/views/system/msg/index'),
+        name: 'MsgEditPage',
+        meta: { title: '消息', icon: '' }
+      }
     ]
   },
   {
