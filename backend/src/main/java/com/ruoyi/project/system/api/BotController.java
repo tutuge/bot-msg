@@ -51,7 +51,7 @@ public class BotController extends BaseController {
         Random r = new Random();
         double v = r.nextDouble() * 5D;
         long v1 = (long) ((v + 5D) * 1000);
-        Thread.sleep(v1);
+//        Thread.sleep(v1);
         return jsonObject;
     }
 }

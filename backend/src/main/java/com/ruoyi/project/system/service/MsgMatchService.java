@@ -1,6 +1,9 @@
 package com.ruoyi.project.system.service;
 
 import com.ruoyi.project.system.domain.PlatformMsg;
+import com.ruoyi.project.system.domain.bo.MsgBo;
+
+import java.util.List;
 
 /**
  * 消息匹配
@@ -28,6 +31,7 @@ public interface MsgMatchService {
      */
     void addMsg(PlatformMsg platformMsg);
 
+    void addMsg(List<MsgBo> msgBos);
 
     /**
      * 删除消息
@@ -37,9 +41,16 @@ public interface MsgMatchService {
     void removeMsg(PlatformMsg platformMsg);
 
     /**
-     * 修改消息
+     * 直接删除
      *
-     * @param platformMsg 消息体
+     * @param msgBos
      */
-    void updateMsg(PlatformMsg platformMsg);
+    void removeMsg(List<MsgBo> msgBos);
+
+    /**
+     * 直接删除
+     *
+     * @param msgBo
+     */
+    void removeMsg(MsgBo msgBo);
 }

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -74,7 +75,7 @@ public class PlatformMsgController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:msg:edit')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody PlatformMsg platformMsg) {
+    public AjaxResult edit(@Valid  @RequestBody PlatformMsg platformMsg) {
         return toAjax(platformMsgService.updatePlatformMsg(platformMsg));
     }
 

@@ -254,7 +254,6 @@ export default {
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-      const userId = row.userId || this.ids
       Promise.all([this.getAllGroup(), this.getAllMsgGroup(), this.getUserInfo(row.userId)])
       this.open = true;
       this.title = "修改平台前端用户";
@@ -272,6 +271,14 @@ export default {
     getUserInfo(userId) {
       getUser(userId).then(response => {
         this.form = response.data;
+        let ids = this.form.msgGroupIds;
+        if (ids !== undefined && ids !== '' && ids !== null) {
+          this.form.msgGroupIds = []
+          ids.split(",").forEach(v => {
+            let tmp = Number.parseInt(v);
+            this.form.msgGroupIds.push(tmp)
+          });
+        }
       });
     },
 

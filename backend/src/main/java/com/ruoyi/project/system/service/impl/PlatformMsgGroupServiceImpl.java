@@ -1,15 +1,22 @@
 package com.ruoyi.project.system.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.project.system.domain.PlatformMsg;
 import com.ruoyi.project.system.domain.PlatformMsgGroup;
 import com.ruoyi.project.system.domain.PlatformUser;
+import com.ruoyi.project.system.domain.bo.MsgBo;
 import com.ruoyi.project.system.mapper.PlatformMsgGroupMapper;
 import com.ruoyi.project.system.service.IPlatformMsgGroupService;
+import com.ruoyi.project.system.service.IPlatformMsgService;
 import com.ruoyi.project.system.service.IPlatformUserService;
+import com.ruoyi.project.system.service.MsgMatchService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,6 +31,10 @@ public class PlatformMsgGroupServiceImpl implements IPlatformMsgGroupService {
     private PlatformMsgGroupMapper platformMsgGroupMapper;
     @Resource
     private IPlatformUserService platformUserService;
+    @Resource
+    private IPlatformMsgService platformMsgService;
+    @Resource
+    private MsgMatchService msgMatchService;
 
     /**
      * 查询消息组群
@@ -67,7 +78,46 @@ public class PlatformMsgGroupServiceImpl implements IPlatformMsgGroupService {
      */
     @Override
     public int updatePlatformMsgGroup(PlatformMsgGroup platformMsgGroup) {
-        return platformMsgGroupMapper.updatePlatformMsgGroup(platformMsgGroup);
+        Long msgGroupId = platformMsgGroup.getMsgGroupId();
+        if (ObjectUtil.isNull(msgGroupId)) {
+            throw new RuntimeException("消息组群id不得为空");
+        }
+        String msgGroupName = platformMsgGroup.getMsgGroupName();
+        if (StrUtil.isBlank(msgGroupName)) {
+            throw new RuntimeException("消息组群名称不得为空");
+        }
+        PlatformMsgGroup old = platformMsgGroupMapper.selectPlatformMsgGroupById(msgGroupId);
+        String oldGroupName = old.getMsgGroupName();
+        if (StrUtil.isBlank(oldGroupName)) {
+            throw new RuntimeException("原始组群名称缺失，请联系管理员");
+        }
+        //修改组群名称
+        platformMsgGroupMapper.updatePlatformMsgGroup(platformMsgGroup);
+        //查询使用了这个组群名的具体的人
+        List<PlatformUser> list = platformUserService.selectByMsgGroupId(msgGroupId);
+        List<MsgBo> msgBos = new ArrayList<>();
+        //根据人再查消息
+        for (PlatformUser user : list) {
+            PlatformMsg platformMsg = new PlatformMsg();
+            platformMsg.setCreateUserId(user.getUserId());
+            List<PlatformMsg> platformMsgs = platformMsgService.selectPlatformMsgList(platformMsg);
+            for (PlatformMsg msg : platformMsgs) {
+                //查到的旧消息先删除
+                MsgBo msgBo = new MsgBo();
+                msgBo.setId(msg.getId());
+                msgBo.setSender(oldGroupName);
+                msgBo.setReceiver(user.getUserName());
+                msgBo.setMessage(msg.getMessage());
+                msgBo.setMsg(msg.getMsg());
+                msgBos.add(msgBo);
+            }
+        }
+        msgMatchService.removeMsg(msgBos);
+        //将旧的组群名换成新的
+        msgBos.forEach(v -> v.setSender(msgGroupName));
+        //再进行添加
+        msgMatchService.addMsg(msgBos);
+        return 1;
     }
 
     /**

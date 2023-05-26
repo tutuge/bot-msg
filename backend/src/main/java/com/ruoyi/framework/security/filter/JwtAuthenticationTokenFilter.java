@@ -58,20 +58,20 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             String ip = loginUser.getIpaddr();
             //获取当前请求的ip地址
             String currentIp = IpUtils.getIpAddr(request);
-            if (!ip.equals(currentIp)) {
-                //强制下线
-                String userName = loginUser.getUsername();
-                // 删除用户缓存记录
-                tokenService.delLoginUser(loginUser.getToken());
-                // 记录用户退出日志
-                AsyncManager.me().execute(AsyncFactory.recordLogininfor(userName, Constants.LOGOUT, "IP不一致强制下线", loginUser.getUser().getUserId()));
-                //ServletUtils.renderString(response, JSON.toJSONString(AjaxResult.error(HttpStatus.SUCCESS, "退出成功")));
-            } else {
+//            if (!ip.equals(currentIp)) {
+//                //强制下线
+//                String userName = loginUser.getUsername();
+//                // 删除用户缓存记录
+//                tokenService.delLoginUser(loginUser.getToken());
+//                // 记录用户退出日志
+//                AsyncManager.me().execute(AsyncFactory.recordLogininfor(userName, Constants.LOGOUT, "IP不一致强制下线", loginUser.getUser().getUserId()));
+//                //ServletUtils.renderString(response, JSON.toJSONString(AjaxResult.error(HttpStatus.SUCCESS, "退出成功")));
+//            } else {
                 tokenService.verifyToken(loginUser);
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginUser, null, loginUser.getAuthorities());
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-            }
+//            }
         }
         chain.doFilter(request, response);
     }

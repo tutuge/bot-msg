@@ -146,16 +146,21 @@ public class MsgMatchServiceImpl implements MsgMatchService, ApplicationRunner {
     @Override
     public void addMsg(PlatformMsg platformMsg) {
         List<MsgBo> msgBos = convert(platformMsg);
-        for (MsgBo convert : msgBos) {
-            int hashCode = convert.hashCode();
+        addMsg(msgBos);
+    }
+
+    @Override
+    public void addMsg(List<MsgBo> msgBos) {
+        for (MsgBo msgBo : msgBos) {
+            int hashCode = msgBo.hashCode();
             MsgArrBo msgArr = getMsgArr(msgs, hashCode);
             if (ObjectUtil.isNotNull(msgArr)) {
                 Set<MsgBo> set = msgArr.getSet();
-                set.add(convert);
+                set.add(msgBo);
             } else {
                 MsgArrBo bo = new MsgArrBo();
                 bo.setHash(hashCode);
-                bo.setSet(Sets.newHashSet(convert));
+                bo.setSet(Sets.newHashSet(msgBo));
                 msgs.add(bo);
             }
         }
@@ -163,20 +168,32 @@ public class MsgMatchServiceImpl implements MsgMatchService, ApplicationRunner {
         printMsg();
     }
 
+
     @Override
     public void removeMsg(PlatformMsg platformMsg) {
         List<MsgBo> msgBos = convert(platformMsg);
+        removeMsg(msgBos);
+    }
+
+    @Override
+    public void removeMsg(List<MsgBo> msgBos) {
         for (MsgBo convert : msgBos) {
-            MsgArrBo msgArr = getMsgArr(msgs, convert.hashCode());
-            if (ObjectUtil.isNotNull(msgArr)) {
-                Set<MsgBo> set = msgArr.getSet();
-                set.remove(convert);
-                if (set.size() == 0) {
-                    msgs.remove(msgArr);
-                }
-                log.info("remove后消息剩余-->{}", msgs.size());
-                printMsg();
+            removeMsg(convert);
+        }
+    }
+
+    @Override
+    public void removeMsg(MsgBo msgBo) {
+        MsgArrBo msgArr = getMsgArr(msgs, msgBo.hashCode());
+        if (ObjectUtil.isNotNull(msgArr)) {
+            Set<MsgBo> set = msgArr.getSet();
+            set.remove(msgBo);
+            if (set.size() == 0) {
+                msgs.remove(msgArr);
             }
+            log.info("remove后消息剩余-->{}", msgs.size());
+            msgs.sort(Comparator.comparing(MsgArrBo::getHash));
+            printMsg();
         }
     }
 
@@ -187,32 +204,9 @@ public class MsgMatchServiceImpl implements MsgMatchService, ApplicationRunner {
                 log.info("消息-->{}", z);
             });
         });
+        log.info("打印完毕------------------------------");
     }
 
-    @Override
-    public void updateMsg(PlatformMsg platformMsg) {
-        List<MsgBo> msgBos = convert(platformMsg);
-        for (MsgBo convert : msgBos) {
-            int hashCode = convert.hashCode();
-            MsgArrBo msgArr = getMsgArr(msgs, hashCode);
-            if (ObjectUtil.isNotNull(msgArr)) {
-                Set<MsgBo> set = msgArr.getSet();
-                for (MsgBo msgBo : set) {
-                    if (msgBo.getId().equals(convert.getId())) {
-                        set.remove(msgBo);
-                        set.add(convert);
-                    }
-                }
-            } else {
-                MsgArrBo bo = new MsgArrBo();
-                bo.setHash(hashCode);
-                bo.setSet(Sets.newHashSet(convert));
-                msgs.add(bo);
-            }
-        }
-        msgs.sort(Comparator.comparing(MsgArrBo::getHash));
-        printMsg();
-    }
 
     /**
      * 使用二分查找确定对应的消息

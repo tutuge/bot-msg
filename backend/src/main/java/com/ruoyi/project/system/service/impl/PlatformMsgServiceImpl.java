@@ -66,7 +66,11 @@ public class PlatformMsgServiceImpl implements IPlatformMsgService {
      */
     @Override
     public int updatePlatformMsg(PlatformMsg platformMsg) {
-        msgMatchService.updateMsg(platformMsg);
+        //先删除
+        PlatformMsg platformMsg1 = platformMsgMapper.selectPlatformMsgById(platformMsg.getId());
+        msgMatchService.removeMsg(platformMsg1);
+        //再添加
+        msgMatchService.addMsg(platformMsg);
         return platformMsgMapper.updatePlatformMsg(platformMsg);
     }
 

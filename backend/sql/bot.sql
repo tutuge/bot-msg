@@ -11,7 +11,7 @@
  Target Server Version : 80029
  File Encoding         : 65001
 
- Date: 23/05/2023 22:16:47
+ Date: 26/05/2023 18:49:16
 */
 
 SET NAMES utf8mb4;
@@ -39,12 +39,14 @@ CREATE TABLE `gen_table`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`table_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '代码生成业务表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '代码生成业务表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of gen_table
 -- ----------------------------
 INSERT INTO `gen_table` VALUES (1, 'platform_msg', '', 'PlatformMsg', 'crud', 'com.ruoyi.project.system', 'system', 'msg', NULL, 'ruoyi', NULL, 'admins', '2023-05-23 19:40:42', '', NULL, NULL);
+INSERT INTO `gen_table` VALUES (2, 'platform_group', '平台前端用户表', 'PlatformGroup', 'crud', 'com.ruoyi.project.system', 'system', 'group', '平台前端用户', 'ruoyi', NULL, 'admins', '2023-05-25 18:54:35', '', NULL, NULL);
+INSERT INTO `gen_table` VALUES (3, 'platform_msg_group', '消息组群', 'PlatformMsgGroup', 'crud', 'com.ruoyi.project.system', 'system', 'group', '消息组群', 'ruoyi', NULL, 'admins', '2023-05-25 19:05:52', '', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for gen_table_column
@@ -74,7 +76,7 @@ CREATE TABLE `gen_table_column`  (
   `update_by` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '更新者',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`column_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '代码生成业务表字段' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '代码生成业务表字段' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of gen_table_column
@@ -89,6 +91,48 @@ INSERT INTO `gen_table_column` VALUES (7, '1', 'receiver', '接收人', 'varchar
 INSERT INTO `gen_table_column` VALUES (8, '1', 'receiver_id', '接送人id', 'bigint', 'Long', 'receiverId', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'input', '', 8, 'admins', '2023-05-23 19:40:42', '', NULL);
 INSERT INTO `gen_table_column` VALUES (9, '1', 'msg', '要回复的消息', 'varchar(255)', 'String', 'msg', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'input', '', 9, 'admins', '2023-05-23 19:40:42', '', NULL);
 INSERT INTO `gen_table_column` VALUES (10, '1', 'pid', '相关的上一条消息id，没有上一条就是1', 'int', 'Long', 'pid', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'input', '', 10, 'admins', '2023-05-23 19:40:42', '', NULL);
+INSERT INTO `gen_table_column` VALUES (11, '2', 'group_id', '用户组id', 'bigint', 'Long', 'groupId', '1', '1', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admins', '2023-05-25 18:54:35', '', NULL);
+INSERT INTO `gen_table_column` VALUES (12, '2', 'group_name', '用户组名称', 'varchar(255)', 'String', 'groupName', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 2, 'admins', '2023-05-25 18:54:35', '', NULL);
+INSERT INTO `gen_table_column` VALUES (13, '2', 'create_time', '创建时间', 'datetime', 'Date', 'createTime', '0', '0', '1', '1', NULL, NULL, NULL, 'EQ', 'datetime', '', 3, 'admins', '2023-05-25 18:54:35', '', NULL);
+INSERT INTO `gen_table_column` VALUES (14, '3', 'msg_group_id', '用户组id', 'bigint', 'Long', 'msgGroupId', '1', '1', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admins', '2023-05-25 19:05:52', '', NULL);
+INSERT INTO `gen_table_column` VALUES (15, '3', 'msg_group_name', '用户组名称', 'varchar(255)', 'String', 'msgGroupName', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 2, 'admins', '2023-05-25 19:05:52', '', NULL);
+INSERT INTO `gen_table_column` VALUES (16, '3', 'create_time', '创建时间', 'datetime', 'Date', 'createTime', '0', '0', '1', '1', NULL, NULL, NULL, 'EQ', 'datetime', '', 3, 'admins', '2023-05-25 19:05:52', '', NULL);
+
+-- ----------------------------
+-- Table structure for platform_group
+-- ----------------------------
+DROP TABLE IF EXISTS `platform_group`;
+CREATE TABLE `platform_group`  (
+  `group_id` bigint NOT NULL AUTO_INCREMENT COMMENT '用户组id',
+  `group_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户组名称',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`group_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '平台前端用户分组表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of platform_group
+-- ----------------------------
+INSERT INTO `platform_group` VALUES (1, '001组', '2023-05-25 19:03:04');
+INSERT INTO `platform_group` VALUES (2, '002组', '2023-05-25 20:48:26');
+
+-- ----------------------------
+-- Table structure for platform_message
+-- ----------------------------
+DROP TABLE IF EXISTS `platform_message`;
+CREATE TABLE `platform_message`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `message` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '消息',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of platform_message
+-- ----------------------------
+INSERT INTO `platform_message` VALUES (1, '今天晚餐吃什么好呢？', '2023-05-25 22:43:12');
+INSERT INTO `platform_message` VALUES (2, '我想吃中餐，你有什么推荐吗？', '2023-05-25 22:43:46');
+INSERT INTO `platform_message` VALUES (3, '太棒了！我喜欢蔬菜和牛肉，你呢？', '2023-05-25 22:44:40');
+INSERT INTO `platform_message` VALUES (4, '太棒了！我喜欢蔬菜和牛肉，你呢？', '2023-05-25 22:45:05');
 
 -- ----------------------------
 -- Table structure for platform_msg
@@ -96,23 +140,39 @@ INSERT INTO `gen_table_column` VALUES (10, '1', 'pid', '相关的上一条消息
 DROP TABLE IF EXISTS `platform_msg`;
 CREATE TABLE `platform_msg`  (
   `id` bigint NOT NULL COMMENT 'id',
-  `app_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'app名称',
-  `sender` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '发送人',
-  `sender_id` bigint NOT NULL COMMENT '发送人id',
   `message` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '发送过来的消息体',
-  `group_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '组群名',
-  `receiver` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '接收人',
-  `receiver_id` bigint NOT NULL COMMENT '接送人id',
   `msg` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '要回复的消息',
-  `pid` int NULL DEFAULT NULL COMMENT '相关的上一条消息id，没有上一条就是1',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+  `create_user_id` bigint NOT NULL COMMENT '创建人id',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '消息保存' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of platform_msg
 -- ----------------------------
-INSERT INTO `platform_msg` VALUES (1661012682840670208, 'WhatAuto', 'meng', 1, 'Ai群', NULL, 'meng', 1, 'Ai群', NULL);
-INSERT INTO `platform_msg` VALUES (1661012880077815808, 'WhatAuto', 'meng', 1, 'Ai群1', NULL, 'meng', 1, 'Ai群2', NULL);
+INSERT INTO `platform_msg` VALUES (1661733075029262336, '今天晚餐吃什么好呢？', '我想吃中餐，你有什么推荐吗？', '2023-05-25 21:56:53', 1);
+INSERT INTO `platform_msg` VALUES (1661741290097930240, '我想吃中餐，你有什么推荐吗？', '可以去尝试那家新开的川菜馆，听说口味很正宗。', '2023-05-25 22:29:31', 1);
+INSERT INTO `platform_msg` VALUES (1661745012744048640, '好主意！我喜欢吃辣的，川菜应该很合我口味。', '那我们点一份麻辣香锅吧，里面可以选不同的配料。', '2023-05-25 22:44:19', 1);
+INSERT INTO `platform_msg` VALUES (1661745063100862464, '太棒了！我喜欢蔬菜和牛肉，你呢？', '我喜欢鸡肉和豆腐，我们可以点一些小龙虾吗？', '2023-05-25 22:44:31', 1);
+
+-- ----------------------------
+-- Table structure for platform_msg_group
+-- ----------------------------
+DROP TABLE IF EXISTS `platform_msg_group`;
+CREATE TABLE `platform_msg_group`  (
+  `msg_group_id` bigint NOT NULL AUTO_INCREMENT COMMENT '用户组id',
+  `msg_group_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户组名称',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`msg_group_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '消息组群' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of platform_msg_group
+-- ----------------------------
+INSERT INTO `platform_msg_group` VALUES (2, 'Ai群', '2023-05-25 20:41:58');
+INSERT INTO `platform_msg_group` VALUES (3, '旅游群', '2023-05-25 20:42:06');
+INSERT INTO `platform_msg_group` VALUES (4, '产品销售1群', '2023-05-25 20:47:11');
+INSERT INTO `platform_msg_group` VALUES (5, '产品销售2群', '2023-05-25 20:47:18');
 
 -- ----------------------------
 -- Table structure for platform_user
@@ -122,13 +182,19 @@ CREATE TABLE `platform_user`  (
   `user_id` bigint NOT NULL AUTO_INCREMENT COMMENT '用户ID',
   `user_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户名',
   `access_token` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '平台用户token',
+  `user_group_id` bigint NULL DEFAULT NULL COMMENT '用户所属用户组id',
+  `msg_group_ids` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '用户所在消息群组',
+  `create_time` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '平台前端用户表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '平台前端用户表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of platform_user
 -- ----------------------------
-INSERT INTO `platform_user` VALUES (1, 'meng', '55bc21a204be4a539dfc1aa7d0bc9e6f');
+INSERT INTO `platform_user` VALUES (1, 'meng', '55bc21a204be4a539dfc1aa7d0bc9e6f', 1, '2,3', NULL);
+INSERT INTO `platform_user` VALUES (2, 'cloud', 'f8d3c3dd91864eefb323da59926dcb6a', 1, '2,3', NULL);
+INSERT INTO `platform_user` VALUES (3, 'Jack', '406218b3aa464451ae115e2e9e50b7f6', 1, '2,3', NULL);
+INSERT INTO `platform_user` VALUES (4, 'Catc', '0f22eedd979044e283b66e854cfacdbd', 2, '4,5', NULL);
 
 -- ----------------------------
 -- Table structure for qrtz_blob_triggers
@@ -277,7 +343,7 @@ CREATE TABLE `qrtz_scheduler_state`  (
 -- ----------------------------
 -- Records of qrtz_scheduler_state
 -- ----------------------------
-INSERT INTO `qrtz_scheduler_state` VALUES ('RuoyiScheduler', 'DESKTOP-QVTSIES1684850290920', 1684851359917, 15000);
+INSERT INTO `qrtz_scheduler_state` VALUES ('RuoyiScheduler', 'DESKTOP-QVTSIES1685025619772', 1685025982949, 15000);
 
 -- ----------------------------
 -- Table structure for qrtz_simple_triggers
@@ -661,7 +727,7 @@ CREATE TABLE `sys_job_log`  (
   `exception_info` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '异常信息',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`job_log_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '定时任务调度日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '定时任务调度日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_job_log
@@ -683,7 +749,7 @@ CREATE TABLE `sys_logininfor`  (
   `login_time` datetime NULL DEFAULT NULL COMMENT '访问时间',
   `user_id` bigint NULL DEFAULT NULL COMMENT '用户id',
   PRIMARY KEY (`info_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统访问记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统访问记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_logininfor
@@ -703,6 +769,8 @@ INSERT INTO `sys_logininfor` VALUES (12, 'admin', '127.0.0.1', '内网IP', 'Chro
 INSERT INTO `sys_logininfor` VALUES (13, 'admins', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '登录成功', '2023-05-23 19:35:57', 1);
 INSERT INTO `sys_logininfor` VALUES (14, 'admins', '192.168.2.130', '内网IP', 'Chrome 11', 'Windows 10', '0', '登录成功', '2023-05-23 19:42:01', 1);
 INSERT INTO `sys_logininfor` VALUES (15, 'admins', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '登录成功', '2023-05-23 19:57:03', 1);
+INSERT INTO `sys_logininfor` VALUES (16, 'admins', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '登录成功', '2023-05-25 01:30:56', 1);
+INSERT INTO `sys_logininfor` VALUES (17, 'admins', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '登录成功', '2023-05-25 18:49:59', 1);
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -726,7 +794,7 @@ CREATE TABLE `sys_menu`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`menu_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2160 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '菜单权限表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2170 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '菜单权限表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_menu
@@ -824,6 +892,16 @@ INSERT INTO `sys_menu` VALUES (2156, '【请填写功能名称】查询', 2155, 
 INSERT INTO `sys_menu` VALUES (2157, '【请填写功能名称】新增', 2155, 2, '#', '', 1, 'F', '0', 'system:msg:add', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
 INSERT INTO `sys_menu` VALUES (2158, '【请填写功能名称】修改', 2155, 3, '#', '', 1, 'F', '0', 'system:msg:edit', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
 INSERT INTO `sys_menu` VALUES (2159, '【请填写功能名称】删除', 2155, 4, '#', '', 1, 'F', '0', 'system:msg:remove', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2160, '用户分组', 2106, 1, 'group', 'system/group/index', 1, 'C', '0', 'system:group:list', 'peoples', 'admin', '2018-03-01 00:00:00', 'admins', '2023-05-25 19:38:45', '平台前端用户菜单');
+INSERT INTO `sys_menu` VALUES (2161, '平台前端用户查询', 2160, 1, '#', '', 1, 'F', '0', 'system:group:query', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2162, '平台前端用户新增', 2160, 2, '#', '', 1, 'F', '0', 'system:group:add', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2163, '平台前端用户修改', 2160, 3, '#', '', 1, 'F', '0', 'system:group:edit', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2164, '平台前端用户删除', 2160, 4, '#', '', 1, 'F', '0', 'system:group:remove', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2165, '消息组群', 2106, 1, 'msggroup', 'system/msggroup/index', 1, 'C', '0', 'system:msggroup:list', 'github', 'admin', '2018-03-01 00:00:00', 'admins', '2023-05-25 19:14:49', '消息组群菜单');
+INSERT INTO `sys_menu` VALUES (2166, '消息组群查询', 2165, 1, '#', '', 1, 'F', '0', 'system:msggroup:query', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2167, '消息组群新增', 2165, 2, '#', '', 1, 'F', '0', 'system:msggroup:add', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2168, '消息组群修改', 2165, 3, '#', '', 1, 'F', '0', 'system:msggroup:edit', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2169, '消息组群删除', 2165, 4, '#', '', 1, 'F', '0', 'system:msggroup:remove', '#', 'admin', '2018-03-01 00:00:00', 'ry', '2018-03-01 00:00:00', '');
 
 -- ----------------------------
 -- Table structure for sys_online
@@ -840,7 +918,7 @@ CREATE TABLE `sys_online`  (
   `login_time` datetime NULL DEFAULT NULL COMMENT '最后访问时间',
   `user_id` bigint NULL DEFAULT NULL COMMENT '用户id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户在线情况' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户在线情况' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_online
@@ -869,7 +947,7 @@ CREATE TABLE `sys_oper_log`  (
   `error_msg` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '错误消息',
   `oper_time` datetime NULL DEFAULT NULL COMMENT '操作时间',
   PRIMARY KEY (`oper_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '操作日志记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 69 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '操作日志记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_oper_log
@@ -887,6 +965,55 @@ INSERT INTO `sys_oper_log` VALUES (16, '菜单管理', 2, 'com.ruoyi.project.sys
 INSERT INTO `sys_oper_log` VALUES (17, '【请填写功能名称】', 1, 'com.ruoyi.project.system.controller.PlatformMsgController.add()', 'POST', 1, 'admins', NULL, '/system/msg', '127.0.0.1', '内网IP', '{\"appName\":\"WhatAuto\",\"groupName\":\"\",\"id\":1661012599072030720,\"message\":\"Ai群\",\"msg\":\"Ai群\",\"params\":{},\"receiver\":\"meng\",\"receiverId\":1,\"sender\":\"meng\",\"senderId\":1}', 'null', 1, '\r\n### Error updating database.  Cause: java.sql.SQLException: Field \'pid\' doesn\'t have a default value\r\n### The error may exist in file [H:\\code\\work\\bot-msg\\backend\\target\\classes\\mybatis\\system\\PlatformMsgMapper.xml]\r\n### The error may involve com.ruoyi.project.system.mapper.PlatformMsgMapper.insertPlatformMsg-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into platform_msg          ( id,             app_name,             sender,             sender_id,             message,                          receiver,             receiver_id,             msg )           values ( ?,             ?,             ?,             ?,             ?,                          ?,             ?,             ? )\r\n### Cause: java.sql.SQLException: Field \'pid\' doesn\'t have a default value\n; Field \'pid\' doesn\'t have a default value; nested exception is java.sql.SQLException: Field \'pid\' doesn\'t have a default value', '2023-05-23 22:13:58');
 INSERT INTO `sys_oper_log` VALUES (18, '【请填写功能名称】', 1, 'com.ruoyi.project.system.controller.PlatformMsgController.add()', 'POST', 1, 'admins', NULL, '/system/msg', '127.0.0.1', '内网IP', '{\"appName\":\"WhatAuto\",\"groupName\":\"\",\"id\":1661012682840670208,\"message\":\"Ai群\",\"msg\":\"Ai群\",\"params\":{},\"receiver\":\"meng\",\"receiverId\":1,\"sender\":\"meng\",\"senderId\":1}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-23 22:14:18');
 INSERT INTO `sys_oper_log` VALUES (19, '【请填写功能名称】', 1, 'com.ruoyi.project.system.controller.PlatformMsgController.add()', 'POST', 1, 'admins', NULL, '/system/msg', '127.0.0.1', '内网IP', '{\"appName\":\"WhatAuto\",\"id\":1661012880077815808,\"message\":\"Ai群1\",\"msg\":\"Ai群2\",\"params\":{},\"receiver\":\"meng\",\"receiverId\":1,\"sender\":\"meng\",\"senderId\":1}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-23 22:15:14');
+INSERT INTO `sys_oper_log` VALUES (20, '【请填写功能名称】', 2, 'com.ruoyi.project.system.controller.PlatformMsgController.edit()', 'PUT', 1, 'admins', NULL, '/system/msg', '127.0.0.1', '内网IP', '{\"appName\":\"WhatAuto\",\"id\":1661012682840670208,\"message\":\"你好\",\"msg\":\"我很好\",\"params\":{},\"receiver\":\"cloud\",\"receiverId\":2,\"sender\":\"meng\",\"senderId\":1}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-23 23:51:36');
+INSERT INTO `sys_oper_log` VALUES (21, '【请填写功能名称】', 2, 'com.ruoyi.project.system.controller.PlatformMsgController.edit()', 'PUT', 1, 'admins', NULL, '/system/msg', '127.0.0.1', '内网IP', '{\"appName\":\"WhatsApp\",\"id\":1661012682840670208,\"message\":\"你好\",\"msg\":\"我很好\",\"params\":{},\"receiver\":\"cloud\",\"receiverId\":2,\"sender\":\"meng\",\"senderId\":1}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-23 23:56:35');
+INSERT INTO `sys_oper_log` VALUES (22, '【请填写功能名称】', 2, 'com.ruoyi.project.system.controller.PlatformMsgController.edit()', 'PUT', 1, 'admins', NULL, '/system/msg', '127.0.0.1', '内网IP', '{\"appName\":\"WhatsApp\",\"id\":1661012682840670208,\"message\":\"你好\",\"msg\":\"我很好\",\"params\":{},\"receiver\":\"cloud\",\"receiverId\":1,\"sender\":\"meng\",\"senderId\":2}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 01:33:48');
+INSERT INTO `sys_oper_log` VALUES (23, '【请填写功能名称】', 2, 'com.ruoyi.project.system.controller.PlatformMsgController.edit()', 'PUT', 1, 'admins', NULL, '/system/msg', '127.0.0.1', '内网IP', '{\"appName\":\"WhatsApp\",\"id\":1661012682840670208,\"message\":\"你好\",\"msg\":\"我很好\",\"params\":{},\"receiver\":\"cloud\",\"receiverId\":1,\"sender\":\"meng\",\"senderId\":2}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 01:37:03');
+INSERT INTO `sys_oper_log` VALUES (24, '【请填写功能名称】', 2, 'com.ruoyi.project.system.controller.PlatformMsgController.edit()', 'PUT', 1, 'admins', NULL, '/system/msg', '127.0.0.1', '内网IP', '{\"appName\":\"WhatsApp\",\"id\":1661012682840670208,\"message\":\"你好\",\"msg\":\"我很好\",\"params\":{},\"receiver\":\"cloud\",\"receiverId\":2,\"sender\":\"meng\",\"senderId\":2}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 01:38:24');
+INSERT INTO `sys_oper_log` VALUES (25, '【请填写功能名称】', 2, 'com.ruoyi.project.system.controller.PlatformMsgController.edit()', 'PUT', 1, 'admins', NULL, '/system/msg', '127.0.0.1', '内网IP', '{\"appName\":\"WhatsApp\",\"id\":1661012682840670208,\"message\":\"你好\",\"msg\":\"我很好\",\"params\":{},\"receiver\":\"cloud\",\"receiverId\":2,\"sender\":\"meng\",\"senderId\":2}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 01:39:54');
+INSERT INTO `sys_oper_log` VALUES (26, '【请填写功能名称】', 2, 'com.ruoyi.project.system.controller.PlatformMsgController.edit()', 'PUT', 1, 'admins', NULL, '/system/msg', '127.0.0.1', '内网IP', '{\"appName\":\"WhatsApp\",\"id\":1661012682840670208,\"message\":\"你好\",\"msg\":\"我很好\",\"params\":{},\"receiver\":\"cloud\",\"receiverId\":2,\"sender\":\"cloud\",\"senderId\":2}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 01:43:08');
+INSERT INTO `sys_oper_log` VALUES (27, '【请填写功能名称】', 2, 'com.ruoyi.project.system.controller.PlatformMsgController.edit()', 'PUT', 1, 'admins', NULL, '/system/msg', '127.0.0.1', '内网IP', '{\"appName\":\"WhatAuto\",\"id\":1661012880077815808,\"message\":\"Ai群1\",\"msg\":\"Ai群2\",\"params\":{},\"receiver\":\"meng\",\"receiverId\":1,\"sender\":\"cloud\",\"senderId\":2}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 01:43:22');
+INSERT INTO `sys_oper_log` VALUES (28, '【请填写功能名称】', 2, 'com.ruoyi.project.system.controller.PlatformMsgController.edit()', 'PUT', 1, 'admins', NULL, '/system/msg', '127.0.0.1', '内网IP', '{\"appName\":\"WhatsApp\",\"id\":1661012682840670208,\"message\":\"你好\",\"msg\":\"我很好\",\"params\":{},\"receiver\":\"cloud\",\"receiverId\":1,\"sender\":\"meng\",\"senderId\":2}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 01:43:27');
+INSERT INTO `sys_oper_log` VALUES (29, '【请填写功能名称】', 2, 'com.ruoyi.project.system.controller.PlatformMsgController.edit()', 'PUT', 1, 'admins', NULL, '/system/msg', '127.0.0.1', '内网IP', '{\"appName\":\"WhatsApp\",\"id\":1661012682840670208,\"message\":\"你好\",\"msg\":\"我很好\",\"params\":{},\"receiver\":\"cloud\",\"receiverId\":1,\"sender\":\"meng\",\"senderId\":2}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 01:43:38');
+INSERT INTO `sys_oper_log` VALUES (30, '【请填写功能名称】', 2, 'com.ruoyi.project.system.controller.PlatformMsgController.edit()', 'PUT', 1, 'admins', NULL, '/system/msg', '127.0.0.1', '内网IP', '{\"appName\":\"WhatsApp\",\"id\":1661012682840670208,\"message\":\"你好\",\"msg\":\"我很好\",\"params\":{},\"receiver\":\"cloud\",\"receiverId\":1,\"sender\":\"meng\",\"senderId\":2}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 01:43:54');
+INSERT INTO `sys_oper_log` VALUES (31, '【请填写功能名称】', 2, 'com.ruoyi.project.system.controller.PlatformMsgController.edit()', 'PUT', 1, 'admins', NULL, '/system/msg', '127.0.0.1', '内网IP', '{\"appName\":\"WhatsApp\",\"id\":1661012682840670208,\"message\":\"你好\",\"msg\":\"我很好\",\"params\":{},\"receiver\":\"cloud\",\"receiverId\":1,\"sender\":\"meng\",\"senderId\":2}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 01:45:24');
+INSERT INTO `sys_oper_log` VALUES (32, '【请填写功能名称】', 2, 'com.ruoyi.project.system.controller.PlatformMsgController.edit()', 'PUT', 1, 'admins', NULL, '/system/msg', '127.0.0.1', '内网IP', '{\"appName\":\"WhatsApp\",\"id\":1661012682840670208,\"message\":\"你好\",\"msg\":\"我很好\",\"params\":{},\"receiver\":\"meng\",\"receiverId\":1,\"sender\":\"cloud\",\"senderId\":2}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 01:47:40');
+INSERT INTO `sys_oper_log` VALUES (33, '【请填写功能名称】', 2, 'com.ruoyi.project.system.controller.PlatformMsgController.edit()', 'PUT', 1, 'admins', NULL, '/system/msg', '127.0.0.1', '内网IP', '{\"appName\":\"WhatsApp\",\"id\":1661012682840670208,\"message\":\"你好\",\"msg\":\"我很好\",\"params\":{},\"receiver\":\"cloud\",\"receiverId\":2,\"sender\":\"meng\",\"senderId\":1}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 01:47:47');
+INSERT INTO `sys_oper_log` VALUES (34, '【请填写功能名称】', 2, 'com.ruoyi.project.system.controller.PlatformMsgController.edit()', 'PUT', 1, 'admins', NULL, '/system/msg', '127.0.0.1', '内网IP', '{\"appName\":\"WhatsApp\",\"id\":1661012682840670208,\"message\":\"你好\",\"msg\":\"我很好\",\"params\":{},\"receiver\":\"meng\",\"receiverId\":1,\"sender\":\"cloud\",\"senderId\":2}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 01:47:54');
+INSERT INTO `sys_oper_log` VALUES (35, '【请填写功能名称】', 2, 'com.ruoyi.project.system.controller.PlatformMsgController.edit()', 'PUT', 1, 'admins', NULL, '/system/msg', '127.0.0.1', '内网IP', '{\"appName\":\"WhatAuto\",\"id\":1661012880077815808,\"message\":\"Ai群1\",\"msg\":\"Ai群2\",\"params\":{},\"receiver\":\"cloud\",\"receiverId\":2,\"sender\":\"meng\",\"senderId\":1}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 01:48:03');
+INSERT INTO `sys_oper_log` VALUES (36, '代码生成', 6, 'com.ruoyi.project.tool.gen.controller.GenController.importTableSave()', 'POST', 1, 'admins', NULL, '/tool/gen/importTable', '127.0.0.1', '内网IP', '', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 18:54:35');
+INSERT INTO `sys_oper_log` VALUES (37, '代码生成', 8, 'com.ruoyi.project.tool.gen.controller.GenController.batchGenCode()', 'GET', 1, 'admins', NULL, '/tool/gen/batchGenCode', '127.0.0.1', '内网IP', '{}', 'null', 0, NULL, '2023-05-25 18:57:25');
+INSERT INTO `sys_oper_log` VALUES (38, '菜单管理', 2, 'com.ruoyi.project.system.controller.SysMenuController.edit()', 'PUT', 1, 'admins', NULL, '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"component\":\"system/group/index\",\"createTime\":\"2018-03-01 00:00:00\",\"icon\":\"peoples\",\"isFrame\":\"1\",\"menuId\":2160,\"menuName\":\"用户分组\",\"menuType\":\"C\",\"orderNum\":\"1\",\"params\":{},\"parentId\":2054,\"path\":\"group\",\"perms\":\"system:group:list\",\"updateBy\":\"admins\",\"visible\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 19:01:34');
+INSERT INTO `sys_oper_log` VALUES (39, '平台前端用户', 1, 'com.ruoyi.project.system.controller.PlatformGroupController.add()', 'POST', 1, 'admins', NULL, '/system/group', '127.0.0.1', '内网IP', '{\"createTime\":\"2023-05-25 19:02:29\",\"groupId\":3,\"groupName\":\"001组\",\"params\":{}}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 19:02:29');
+INSERT INTO `sys_oper_log` VALUES (40, '平台前端用户', 1, 'com.ruoyi.project.system.controller.PlatformGroupController.add()', 'POST', 1, 'admins', NULL, '/system/group', '127.0.0.1', '内网IP', '{\"createTime\":\"2023-05-25 19:03:03\",\"groupId\":1,\"groupName\":\"001组\",\"params\":{}}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 19:03:03');
+INSERT INTO `sys_oper_log` VALUES (41, '代码生成', 6, 'com.ruoyi.project.tool.gen.controller.GenController.importTableSave()', 'POST', 1, 'admins', NULL, '/tool/gen/importTable', '127.0.0.1', '内网IP', '', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 19:05:53');
+INSERT INTO `sys_oper_log` VALUES (42, '代码生成', 8, 'com.ruoyi.project.tool.gen.controller.GenController.batchGenCode()', 'GET', 1, 'admins', NULL, '/tool/gen/batchGenCode', '127.0.0.1', '内网IP', '{}', 'null', 0, NULL, '2023-05-25 19:06:05');
+INSERT INTO `sys_oper_log` VALUES (43, '菜单管理', 2, 'com.ruoyi.project.system.controller.SysMenuController.edit()', 'PUT', 1, 'admins', NULL, '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"component\":\"system/msggroup/index\",\"createTime\":\"2018-03-01 00:00:00\",\"icon\":\"#\",\"isFrame\":\"1\",\"menuId\":2165,\"menuName\":\"消息组群\",\"menuType\":\"C\",\"orderNum\":\"1\",\"params\":{},\"parentId\":2106,\"path\":\"msggroup\",\"perms\":\"system:msggroup:list\",\"updateBy\":\"admins\",\"visible\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 19:14:16');
+INSERT INTO `sys_oper_log` VALUES (44, '菜单管理', 2, 'com.ruoyi.project.system.controller.SysMenuController.edit()', 'PUT', 1, 'admins', NULL, '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"component\":\"system/msggroup/index\",\"createTime\":\"2018-03-01 00:00:00\",\"icon\":\"github\",\"isFrame\":\"1\",\"menuId\":2165,\"menuName\":\"消息组群\",\"menuType\":\"C\",\"orderNum\":\"1\",\"params\":{},\"parentId\":2106,\"path\":\"msggroup\",\"perms\":\"system:msggroup:list\",\"updateBy\":\"admins\",\"visible\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 19:14:49');
+INSERT INTO `sys_oper_log` VALUES (45, '菜单管理', 2, 'com.ruoyi.project.system.controller.SysMenuController.edit()', 'PUT', 1, 'admins', NULL, '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"component\":\"system/group/index\",\"createTime\":\"2018-03-01 00:00:00\",\"icon\":\"peoples\",\"isFrame\":\"1\",\"menuId\":2160,\"menuName\":\"用户分组\",\"menuType\":\"C\",\"orderNum\":\"1\",\"params\":{},\"parentId\":2106,\"path\":\"group\",\"perms\":\"system:group:list\",\"updateBy\":\"admins\",\"visible\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 19:38:45');
+INSERT INTO `sys_oper_log` VALUES (46, '消息组群', 1, 'com.ruoyi.project.system.controller.PlatformMsgGroupController.add()', 'POST', 1, 'admins', NULL, '/system/msggroup', '127.0.0.1', '内网IP', '{\"createTime\":\"2023-05-25 20:41:58\",\"msgGroupId\":2,\"msgGroupName\":\"Ai群\",\"params\":{}}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 20:41:58');
+INSERT INTO `sys_oper_log` VALUES (47, '消息组群', 1, 'com.ruoyi.project.system.controller.PlatformMsgGroupController.add()', 'POST', 1, 'admins', NULL, '/system/msggroup', '127.0.0.1', '内网IP', '{\"createTime\":\"2023-05-25 20:42:06\",\"msgGroupId\":3,\"msgGroupName\":\"旅游群\",\"params\":{}}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 20:42:06');
+INSERT INTO `sys_oper_log` VALUES (48, '平台前端用户', 2, 'com.ruoyi.project.system.controller.PlatformUserController.edit()', 'POST', 1, 'admins', NULL, '/system/platuser/update', '127.0.0.1', '内网IP', '{\"accessToken\":\"55bc21a204be4a539dfc1aa7d0bc9e6f\",\"msgGroupIds\":\"2,3\",\"params\":{},\"userGroupId\":1,\"userId\":1,\"userName\":\"meng\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 20:45:29');
+INSERT INTO `sys_oper_log` VALUES (49, '平台前端用户', 1, 'com.ruoyi.project.system.controller.PlatformUserController.add()', 'POST', 1, 'admins', NULL, '/system/platuser', '127.0.0.1', '内网IP', '{\"accessToken\":\"406218b3aa464451ae115e2e9e50b7f6\",\"msgGroupIds\":\"2,3\",\"params\":{},\"userGroupId\":1,\"userId\":3,\"userName\":\"Jack\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 20:46:45');
+INSERT INTO `sys_oper_log` VALUES (50, '平台前端用户', 2, 'com.ruoyi.project.system.controller.PlatformUserController.edit()', 'POST', 1, 'admins', NULL, '/system/platuser/update', '127.0.0.1', '内网IP', '{\"accessToken\":\"f8d3c3dd91864eefb323da59926dcb6a\",\"msgGroupIds\":\"2,3\",\"params\":{},\"userGroupId\":1,\"userId\":2,\"userName\":\"cloud\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 20:46:52');
+INSERT INTO `sys_oper_log` VALUES (51, '消息组群', 1, 'com.ruoyi.project.system.controller.PlatformMsgGroupController.add()', 'POST', 1, 'admins', NULL, '/system/msggroup', '127.0.0.1', '内网IP', '{\"createTime\":\"2023-05-25 20:47:11\",\"msgGroupId\":4,\"msgGroupName\":\"产品销售1群\",\"params\":{}}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 20:47:11');
+INSERT INTO `sys_oper_log` VALUES (52, '消息组群', 1, 'com.ruoyi.project.system.controller.PlatformMsgGroupController.add()', 'POST', 1, 'admins', NULL, '/system/msggroup', '127.0.0.1', '内网IP', '{\"createTime\":\"2023-05-25 20:47:17\",\"msgGroupId\":5,\"msgGroupName\":\"产品销售2群\",\"params\":{}}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 20:47:17');
+INSERT INTO `sys_oper_log` VALUES (53, '平台前端用户', 1, 'com.ruoyi.project.system.controller.PlatformGroupController.add()', 'POST', 1, 'admins', NULL, '/system/group', '127.0.0.1', '内网IP', '{\"createTime\":\"2023-05-25 20:48:26\",\"groupId\":2,\"groupName\":\"002组\",\"params\":{}}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 20:48:26');
+INSERT INTO `sys_oper_log` VALUES (54, '平台前端用户', 1, 'com.ruoyi.project.system.controller.PlatformUserController.add()', 'POST', 1, 'admins', NULL, '/system/platuser', '127.0.0.1', '内网IP', '{\"accessToken\":\"0f22eedd979044e283b66e854cfacdbd\",\"msgGroupIds\":\"4,5\",\"params\":{},\"userGroupId\":2,\"userId\":4,\"userName\":\"Catc\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 20:48:54');
+INSERT INTO `sys_oper_log` VALUES (55, '消息组群', 3, 'com.ruoyi.project.system.controller.PlatformMsgGroupController.remove()', 'DELETE', 1, 'admins', NULL, '/system/msggroup/5', '127.0.0.1', '内网IP', '{msgGroupIds=5}', 'null', 1, '当前消息分组仍然被使用中，无法删除', '2023-05-25 21:05:19');
+INSERT INTO `sys_oper_log` VALUES (56, '【请填写功能名称】', 1, 'com.ruoyi.project.system.controller.PlatformMsgController.add()', 'POST', 1, 'admins', NULL, '/system/msg', '127.0.0.1', '内网IP', '{\"id\":1661731755438309376,\"message\":\"今天晚餐吃什么好呢？\",\"msg\":\"我想吃中餐，你有什么推荐吗？\",\"params\":{}}', 'null', 1, '\r\n### Error updating database.  Cause: java.sql.SQLException: Field \'create_time\' doesn\'t have a default value\r\n### The error may exist in file [H:\\code\\work\\bot-msg\\backend\\target\\classes\\mybatis\\system\\PlatformMsgMapper.xml]\r\n### The error may involve com.ruoyi.project.system.mapper.PlatformMsgMapper.insertPlatformMsg-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into platform_msg          ( id,             message,             msg )           values ( ?,             ?,             ? )\r\n### Cause: java.sql.SQLException: Field \'create_time\' doesn\'t have a default value\n; Field \'create_time\' doesn\'t have a default value; nested exception is java.sql.SQLException: Field \'create_time\' doesn\'t have a default value', '2023-05-25 21:51:38');
+INSERT INTO `sys_oper_log` VALUES (57, '【请填写功能名称】', 1, 'com.ruoyi.project.system.controller.PlatformMsgController.add()', 'POST', 1, 'admins', NULL, '/system/msg', '127.0.0.1', '内网IP', '{\"id\":1661731931611660288,\"message\":\"今天晚餐吃什么好呢？\",\"msg\":\"我想吃中餐，你有什么推荐吗？\",\"params\":{}}', 'null', 1, '\r\n### Error updating database.  Cause: java.sql.SQLException: Field \'create_time\' doesn\'t have a default value\r\n### The error may exist in file [H:\\code\\work\\bot-msg\\backend\\target\\classes\\mybatis\\system\\PlatformMsgMapper.xml]\r\n### The error may involve com.ruoyi.project.system.mapper.PlatformMsgMapper.insertPlatformMsg-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into platform_msg          ( id,             message,             msg )           values ( ?,             ?,             ? )\r\n### Cause: java.sql.SQLException: Field \'create_time\' doesn\'t have a default value\n; Field \'create_time\' doesn\'t have a default value; nested exception is java.sql.SQLException: Field \'create_time\' doesn\'t have a default value', '2023-05-25 21:52:20');
+INSERT INTO `sys_oper_log` VALUES (58, '【请填写功能名称】', 1, 'com.ruoyi.project.system.controller.PlatformMsgController.add()', 'POST', 1, 'admins', NULL, '/system/msg', '127.0.0.1', '内网IP', '{\"id\":1661732027078213632,\"message\":\"今天晚餐吃什么好呢？\",\"msg\":\"我想吃中餐，你有什么推荐吗？\",\"params\":{}}', 'null', 1, '\r\n### Error updating database.  Cause: java.sql.SQLException: Field \'create_time\' doesn\'t have a default value\r\n### The error may exist in file [H:\\code\\work\\bot-msg\\backend\\target\\classes\\mybatis\\system\\PlatformMsgMapper.xml]\r\n### The error may involve com.ruoyi.project.system.mapper.PlatformMsgMapper.insertPlatformMsg-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into platform_msg          ( id,             message,             msg )           values ( ?,             ?,             ? )\r\n### Cause: java.sql.SQLException: Field \'create_time\' doesn\'t have a default value\n; Field \'create_time\' doesn\'t have a default value; nested exception is java.sql.SQLException: Field \'create_time\' doesn\'t have a default value', '2023-05-25 21:52:43');
+INSERT INTO `sys_oper_log` VALUES (59, '【请填写功能名称】', 1, 'com.ruoyi.project.system.controller.PlatformMsgController.add()', 'POST', 1, 'admins', NULL, '/system/msg', '127.0.0.1', '内网IP', '{\"id\":1661732191092277248,\"message\":\"今天晚餐吃什么好呢？\",\"msg\":\"我想吃中餐，你有什么推荐吗？\",\"params\":{}}', 'null', 1, '\r\n### Error updating database.  Cause: java.sql.SQLException: Field \'create_user_id\' doesn\'t have a default value\r\n### The error may exist in file [H:\\code\\work\\bot-msg\\backend\\target\\classes\\mybatis\\system\\PlatformMsgMapper.xml]\r\n### The error may involve com.ruoyi.project.system.mapper.PlatformMsgMapper.insertPlatformMsg-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into platform_msg          ( id,             message,             msg )           values ( ?,             ?,             ? )\r\n### Cause: java.sql.SQLException: Field \'create_user_id\' doesn\'t have a default value\n; Field \'create_user_id\' doesn\'t have a default value; nested exception is java.sql.SQLException: Field \'create_user_id\' doesn\'t have a default value', '2023-05-25 21:53:22');
+INSERT INTO `sys_oper_log` VALUES (60, '【请填写功能名称】', 1, 'com.ruoyi.project.system.controller.PlatformMsgController.add()', 'POST', 1, 'admins', NULL, '/system/msg', '127.0.0.1', '内网IP', '{\"id\":1661732523469897728,\"message\":\"今天晚餐吃什么好呢？\",\"msg\":\"我想吃中餐，你有什么推荐吗？\",\"params\":{}}', 'null', 1, '\r\n### Error updating database.  Cause: java.sql.SQLException: Field \'create_user_id\' doesn\'t have a default value\r\n### The error may exist in file [H:\\code\\work\\bot-msg\\backend\\target\\classes\\mybatis\\system\\PlatformMsgMapper.xml]\r\n### The error may involve com.ruoyi.project.system.mapper.PlatformMsgMapper.insertPlatformMsg-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into platform_msg          ( id,             message,             msg )           values ( ?,             ?,             ? )\r\n### Cause: java.sql.SQLException: Field \'create_user_id\' doesn\'t have a default value\n; Field \'create_user_id\' doesn\'t have a default value; nested exception is java.sql.SQLException: Field \'create_user_id\' doesn\'t have a default value', '2023-05-25 21:54:41');
+INSERT INTO `sys_oper_log` VALUES (61, '【请填写功能名称】', 1, 'com.ruoyi.project.system.controller.PlatformMsgController.add()', 'POST', 1, 'admins', NULL, '/system/msg', '127.0.0.1', '内网IP', '{\"id\":1661732658996248576,\"message\":\"今天晚餐吃什么好呢？\",\"msg\":\"我想吃中餐，你有什么推荐吗？\",\"params\":{}}', 'null', 1, '\r\n### Error updating database.  Cause: java.sql.SQLException: Field \'create_user_id\' doesn\'t have a default value\r\n### The error may exist in file [H:\\code\\work\\bot-msg\\backend\\target\\classes\\mybatis\\system\\PlatformMsgMapper.xml]\r\n### The error may involve com.ruoyi.project.system.mapper.PlatformMsgMapper.insertPlatformMsg-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into platform_msg          ( id,             message,             msg )           values ( ?,             ?,             ? )\r\n### Cause: java.sql.SQLException: Field \'create_user_id\' doesn\'t have a default value\n; Field \'create_user_id\' doesn\'t have a default value; nested exception is java.sql.SQLException: Field \'create_user_id\' doesn\'t have a default value', '2023-05-25 21:55:14');
+INSERT INTO `sys_oper_log` VALUES (62, '【请填写功能名称】', 2, 'com.ruoyi.project.system.controller.PlatformMsgController.edit()', 'PUT', 1, 'admins', NULL, '/system/msg', '127.0.0.1', '内网IP', '{\"createUserId\":1,\"id\":1661012682840670208,\"message\":\"你好\",\"msg\":\"我很好\",\"params\":{}}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 21:56:43');
+INSERT INTO `sys_oper_log` VALUES (63, '【请填写功能名称】', 1, 'com.ruoyi.project.system.controller.PlatformMsgController.add()', 'POST', 1, 'admins', NULL, '/system/msg', '127.0.0.1', '内网IP', '{\"createUserId\":1,\"id\":1661733075029262336,\"message\":\"今天晚餐吃什么好呢？\",\"msg\":\"我想吃中餐，你有什么推荐吗？\",\"params\":{}}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 21:56:53');
+INSERT INTO `sys_oper_log` VALUES (64, '【请填写功能名称】', 1, 'com.ruoyi.project.system.controller.PlatformMsgController.add()', 'POST', 1, 'admins', NULL, '/system/msg', '127.0.0.1', '内网IP', '{\"createUserId\":1,\"id\":1661741290097930240,\"message\":\"我想吃中餐，你有什么推荐吗？\",\"msg\":\"可以去尝试那家新开的川菜馆，听说口味很正宗。\",\"params\":{}}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 22:29:31');
+INSERT INTO `sys_oper_log` VALUES (65, '【请填写功能名称】', 3, 'com.ruoyi.project.system.controller.PlatformMsgController.remove()', 'DELETE', 1, 'admins', NULL, '/system/msg/1661012880077815808', '127.0.0.1', '内网IP', '{ids=1661012880077815808}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 22:30:56');
+INSERT INTO `sys_oper_log` VALUES (66, '【请填写功能名称】', 3, 'com.ruoyi.project.system.controller.PlatformMsgController.remove()', 'DELETE', 1, 'admins', NULL, '/system/msg/1661012682840670208', '127.0.0.1', '内网IP', '{ids=1661012682840670208}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 22:35:26');
+INSERT INTO `sys_oper_log` VALUES (67, '【请填写功能名称】', 1, 'com.ruoyi.project.system.controller.PlatformMsgController.add()', 'POST', 1, 'admins', NULL, '/system/msg', '127.0.0.1', '内网IP', '{\"createUserId\":1,\"id\":1661745012744048640,\"message\":\"好主意！我喜欢吃辣的，川菜应该很合我口味。\",\"msg\":\"那我们点一份麻辣香锅吧，里面可以选不同的配料。\",\"params\":{}}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 22:44:19');
+INSERT INTO `sys_oper_log` VALUES (68, '【请填写功能名称】', 1, 'com.ruoyi.project.system.controller.PlatformMsgController.add()', 'POST', 1, 'admins', NULL, '/system/msg', '127.0.0.1', '内网IP', '{\"createUserId\":1,\"id\":1661745063100862464,\"message\":\"太棒了！我喜欢蔬菜和牛肉，你呢？\",\"msg\":\"我喜欢鸡肉和豆腐，我们可以点一些小龙虾吗？\",\"params\":{}}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-25 22:44:31');
 
 -- ----------------------------
 -- Table structure for sys_post
@@ -904,7 +1031,7 @@ CREATE TABLE `sys_post`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`post_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '岗位信息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '岗位信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_post
