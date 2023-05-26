@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Sets;
+import com.ruoyi.framework.redis.RedisCache;
 import com.ruoyi.project.system.domain.PlatformMessage;
 import com.ruoyi.project.system.domain.PlatformMsg;
 import com.ruoyi.project.system.domain.PlatformMsgGroup;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -32,6 +34,8 @@ public class MsgMatchServiceImpl implements MsgMatchService, ApplicationRunner {
     private IPlatformMessageService platformMessageService;
     @Resource
     private IPlatformUserService platformUserService;
+    @Resource
+    private RedisCache redisCache;
 
     @Resource
     private IPlatformMsgGroupService platformMsgGroupService;
@@ -85,24 +89,38 @@ public class MsgMatchServiceImpl implements MsgMatchService, ApplicationRunner {
      */
     @Override
     public String reply(String app, String sender, String message, String groupName, String receiver) {
-
         if (StrUtil.isNotBlank(message)) {
             PlatformMessage platformMessage = new PlatformMessage();
             platformMessage.setMessage(message);
             platformMessageService.insertPlatformMessage(platformMessage);
+        } else {
+            return null;
         }
-        MsgBo msgBo = new MsgBo();
-        msgBo.setSender(sender);
-        msgBo.setMessage(message);
-        msgBo.setReceiver(receiver);
+        //下面执行加锁，同样的消息就回一条
+        String joinKey = StrUtil.join(":", sender, message, receiver);
+        Integer lock = redisCache.getCacheObject(joinKey);
+        if (ObjectUtil.isNotNull(lock) && lock == 1) {
+            return null;
+        }
+        synchronized (MsgMatchServiceImpl.class) {
+            lock = redisCache.getCacheObject(joinKey);
+            if (ObjectUtil.isNotNull(lock) && lock == 1) {
+                return null;
+            }
+            redisCache.setCacheObject(joinKey, 1, 2, TimeUnit.SECONDS);
+            MsgBo msgBo = new MsgBo();
+            msgBo.setSender(sender);
+            msgBo.setMessage(message);
+            msgBo.setReceiver(receiver);
 
-        MsgArrBo msgArr = getMsgArr(msgs, msgBo.hashCode());
-        log.info("前置匹配到的消息为--->{}", msgArr);
-        if (ObjectUtil.isNotNull(msgArr)) {
-            Set<MsgBo> set = msgArr.getSet();
-            for (MsgBo msg : set) {
-                if (msg.equals(msgBo)) {
-                    return msg.getMsg();
+            MsgArrBo msgArr = getMsgArr(msgs, msgBo.hashCode());
+            log.info("前置匹配到的消息为--->{}", msgArr);
+            if (ObjectUtil.isNotNull(msgArr)) {
+                Set<MsgBo> set = msgArr.getSet();
+                for (MsgBo msg : set) {
+                    if (msg.equals(msgBo)) {
+                        return msg.getMsg();
+                    }
                 }
             }
         }

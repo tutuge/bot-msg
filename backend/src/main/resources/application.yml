@@ -33,7 +33,7 @@ server:
 logging:
   level:
     com.ruoyi: info
-    com.ruoyi.framework.security.filter: warn
+    com.ruoyi.framework.security.filter: info
     org.springframework: warn
 
 # Spring配置
