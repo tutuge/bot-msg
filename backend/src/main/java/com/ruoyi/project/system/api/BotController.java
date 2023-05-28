@@ -9,10 +9,7 @@ import com.ruoyi.project.system.service.ISysConfigService;
 import com.ruoyi.project.system.service.MsgMatchService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Random;
@@ -79,5 +76,12 @@ public class BotController extends BaseController {
         long v1 = (long) ((v + (two - one)) * 1000);
         Thread.sleep(v1);
         return jsonObject;
+    }
+
+
+    @PostMapping("telegram")
+    public JSONObject tele(@RequestBody JSONObject jsonObject) {
+        log.info("当前电报请求-->{}", jsonObject);
+        return null;
     }
 }

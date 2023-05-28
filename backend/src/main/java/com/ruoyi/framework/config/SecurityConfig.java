@@ -87,7 +87,7 @@ public class SecurityConfig {
                 // 过滤请求
                 .authorizeRequests()
                 // 对于登录login 验证码captchaImage 允许匿名访问
-                .antMatchers("/login", "/api/**", "/websocket", "/captchaImage", "/getSiteName").anonymous()
+                .antMatchers("/login", "/api/**", "/websocket", "/captchaImage", "/getSiteName","/bot/telegram").anonymous()
                 .antMatchers(
                         HttpMethod.GET,
                         "/*.html",
